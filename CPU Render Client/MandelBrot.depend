@@ -1,0 +1,85 @@
+# depslib dependency file v1.0
+1373317152 source:c:\users\justin_becker\dropbox\comp prog\mandelbrot\easybmp.cpp
+	"EasyBMP.h"
+
+1373317152 c:\users\justin_becker\dropbox\comp prog\mandelbrot\easybmp.h
+	<iostream>
+	<cmath>
+	<cctype>
+	<cstring>
+	<stdio.h>
+	<cstdio>
+	"EasyBMP_DataStructures.h"
+	"EasyBMP_BMP.h"
+	"EasyBMP_VariousBMPutilities.h"
+
+1373317152 c:\users\justin_becker\dropbox\comp prog\mandelbrot\easybmp_datastructures.h
+
+1373317152 c:\users\justin_becker\dropbox\comp prog\mandelbrot\easybmp_bmp.h
+
+1373317152 c:\users\justin_becker\dropbox\comp prog\mandelbrot\easybmp_variousbmputilities.h
+
+1374897672 source:c:\users\justin_becker\dropbox\comp prog\mandelbrot\main.cpp
+	<iostream>
+	"EasyBMP\EasyBMP.h"
+	<stdio.h>
+	<assert.h>
+	<cstdlib>
+	<string>
+	<sstream>
+	"gmp.h"
+
+1373317152 c:\users\justin_becker\dropbox\comp prog\mandelbrot\easybmp\easybmp.h
+	<iostream>
+	<cmath>
+	<cctype>
+	<cstring>
+	<stdio.h>
+	<cstdio>
+	"EasyBMP_DataStructures.h"
+	"EasyBMP_BMP.h"
+	"EasyBMP_VariousBMPutilities.h"
+
+1373317152 c:\users\justin_becker\dropbox\comp prog\mandelbrot\easybmp\easybmp_datastructures.h
+
+1373317152 c:\users\justin_becker\dropbox\comp prog\mandelbrot\easybmp\easybmp_bmp.h
+
+1373317152 c:\users\justin_becker\dropbox\comp prog\mandelbrot\easybmp\easybmp_variousbmputilities.h
+
+1035175203 c:\users\justin_becker\dropbox\comp prog\mandelbrot\gmp\include\gmp.h
+	<iosfwd>
+	<cstddef>
+	<stddef.h>
+
+1374900297 source:c:\users\justin_becker\dropbox\comp prog\mandelbrot\cpu render client\main.cpp
+	<iostream>
+	"EasyBMP\EasyBMP.h"
+	<stdio.h>
+	<assert.h>
+	<cstdlib>
+	<string>
+	<sstream>
+	"gmp.h"
+
+1373317152 c:\users\justin_becker\dropbox\comp prog\mandelbrot\cpu render client\easybmp\easybmp.h
+	<iostream>
+	<cmath>
+	<cctype>
+	<cstring>
+	<stdio.h>
+	<cstdio>
+	"EasyBMP_DataStructures.h"
+	"EasyBMP_BMP.h"
+	"EasyBMP_VariousBMPutilities.h"
+
+1373317152 c:\users\justin_becker\dropbox\comp prog\mandelbrot\cpu render client\easybmp\easybmp_datastructures.h
+
+1373317152 c:\users\justin_becker\dropbox\comp prog\mandelbrot\cpu render client\easybmp\easybmp_bmp.h
+
+1373317152 c:\users\justin_becker\dropbox\comp prog\mandelbrot\cpu render client\easybmp\easybmp_variousbmputilities.h
+
+1035175203 c:\users\justin_becker\dropbox\comp prog\mandelbrot\cpu render client\gmp\include\gmp.h
+	<iosfwd>
+	<cstddef>
+	<stddef.h>
+
