@@ -83,3 +83,35 @@
 	<cstddef>
 	<stddef.h>
 
+1375800635 source:c:\users\justin_becker\dropbox\github\mandelbrot_set_renderer\cpu render client\main.cpp
+	<iostream>
+	"EasyBMP\EasyBMP.h"
+	<stdio.h>
+	<assert.h>
+	<cstdlib>
+	<string>
+	<sstream>
+	"gmp.h"
+
+1375731551 c:\users\justin_becker\dropbox\github\mandelbrot_set_renderer\cpu render client\easybmp\easybmp.h
+	<iostream>
+	<cmath>
+	<cctype>
+	<cstring>
+	<stdio.h>
+	<cstdio>
+	"EasyBMP_DataStructures.h"
+	"EasyBMP_BMP.h"
+	"EasyBMP_VariousBMPutilities.h"
+
+1375731551 c:\users\justin_becker\dropbox\github\mandelbrot_set_renderer\cpu render client\easybmp\easybmp_datastructures.h
+
+1375731551 c:\users\justin_becker\dropbox\github\mandelbrot_set_renderer\cpu render client\easybmp\easybmp_bmp.h
+
+1375731551 c:\users\justin_becker\dropbox\github\mandelbrot_set_renderer\cpu render client\easybmp\easybmp_variousbmputilities.h
+
+1375731551 c:\users\justin_becker\dropbox\github\mandelbrot_set_renderer\cpu render client\gmp\include\gmp.h
+	<iosfwd>
+	<cstddef>
+	<stddef.h>
+
