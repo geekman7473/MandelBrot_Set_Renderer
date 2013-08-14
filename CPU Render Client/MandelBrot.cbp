@@ -13,11 +13,11 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-g" />
-					<Add directory="depend/gmp/include" />
+					<Add directory="depend/gmp" />
 				</Compiler>
 				<Linker>
-					<Add option="-lgmp" />
-					<Add directory="depend/gmp/lib" />
+					<Add option="-lgmp -lgmpxx" />
+					<Add directory="depend/gmp" />
 				</Linker>
 			</Target>
 			<Target title="Release">
@@ -37,7 +37,7 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
-		<Unit filename="EasyBMP.cpp" />
+		<Unit filename="depend/EasyBMP/EasyBMP.cpp" />
 		<Unit filename="main.cpp" />
 		<Extensions>
 			<code_completion />
