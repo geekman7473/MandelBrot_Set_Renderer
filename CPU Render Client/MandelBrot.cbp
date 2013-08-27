@@ -17,6 +17,7 @@
 				</Compiler>
 				<Linker>
 					<Add option="-lgmp -lgmpxx" />
+					<Add library="ws2_32" />
 					<Add directory="depend/gmp" />
 				</Linker>
 			</Target>

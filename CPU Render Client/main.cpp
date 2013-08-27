@@ -8,15 +8,30 @@
 #include <string>
 #include <sstream>
 #include "depend\ttmath\ttmath\ttmath.h"
+#include <winsock.h>
 
 //Project Build options specify the location of gmp.h
 #include "gmpxx.h"
 
 using namespace std;
 
-#define iterMax 100
+//TODO: this setting should be externally defined by a config.ini file
+#define maxThreads 6
 
+
+//global socket for communication to central server
+SOCKET s;
+
+//Type for use with TTMATH library. This is slower but seems to be more C++ compliant
 typedef ttmath::Big<TTMATH_BITS(32), TTMATH_BITS(1024)> LLDo;
+
+struct workerThread{
+    //maximum number of threads to be used
+    unsigned int maxThreads;
+
+    //the value from 0 to maxThreads - 1 indicating this threads position.
+    unsigned int threadID;
+};
 
 struct workOrder_t {
     //defines the type of work the client is required to do
@@ -55,9 +70,11 @@ struct workOrder_t {
     //Finished work will be stored in this variable for transmission back to the Project Coordination Server
     BMP completedWork;
 
-    //total size of workOrder_t is at minimum 60 Bytes, size greatly depends on the length of string components
+    //total size of workOrder_t is at minimum 60 Bytes, size varies greatly depending on the length of its string components
 };
 
+bool ConnectToHost(int PortNo, char* IPAddress);
+void CloseConnection ();
 string intToString(long long int val);
 string doubleToString(long double val);
 int MandelRender(workOrder_t *w);
@@ -68,28 +85,65 @@ int main(){
 //cin.get();
     //mpf_set()
 
-    long long int totalIters = 0;
-    long long max_iteration = iterMax;
-    BMP test;
-    test.SetSize(1920, 1080);
-    LLDo zoomFactor =1;
-    long long int totalZooms = 1;
-    LLDo totalZoomFactNum = 0;
     workOrder_t testWork;
     testWork.workType = 1;
-    testWork.xCord = "0";
+    testWork.xCord = "-1.5";
     testWork.yCord = "0";
-    testWork.FrameWidth = 1920;
-    testWork.FrameHeight = 1080;
+    testWork.FrameWidth = 700;
+    testWork.FrameHeight = 400;
     testWork.zoomFactor = "1";
-    testWork.maximumIterations = 10000;
+    testWork.maximumIterations = 100;
+
+    cout << "Specify width: ";
+    cin >> testWork.FrameWidth;
+    cout << endl << "Specify height: ";
+    cin >> testWork.FrameHeight;
+    cout << endl << "Specify MaxIter: ";
+    cin >> testWork.maximumIterations;
 
 
-    MandelRender(&testWork);
+    LLDo MAX_ZOOM;
+    MAX_ZOOM = 2;
+    for(int i = 0; i < 600; i++ ){
+        MAX_ZOOM *= 2;
+    }
+    cout << MAX_ZOOM << endl;
+    unsigned long long int totalRenderTime = 0;
+
+    for(LLDo i = 0; i < 9000; i++){
+        if(i.ToInt() % 30 != 0){
+            LLDo temp = testWork.zoomFactor;
+            LLDo temp2, temp4;
+
+            temp4 = temp;
+            ttmath::Int<TTMATH_BITS(1024)> temp3 = temp4.ToUInt();
+            temp4 = temp3;
+
+            temp2.Log(temp4,2);
+
+            ttmath::Int<TTMATH_BITS(1024)> temp5 = temp2.ToUInt();
+            temp2 = temp5;
+
+            temp += (temp2 + 1) / 30;
+            testWork.zoomFactor = temp.ToString();
+        } else {
+            LLDo temp = 2;
+            temp.Pow(i / 30);
+            testWork.zoomFactor = temp.ToString();
+        }
+
+        MandelRender(&testWork);
+        cout << "Frame #: " << i + 1 << endl;
+        cout << "ZoomFactor: " << testWork.zoomFactor.substr(0, 40) << endl;
+        cout << endl << "Render Time: " << testWork.timeWorkFinsished - testWork.timeWorkStarted << endl;
+        totalRenderTime += testWork.timeWorkFinsished - testWork.timeWorkStarted;
+        cout << "Average Render time per frame: " << totalRenderTime / (i.ToInt() + 1) << endl;
+        cout << "Overall Render time: " << totalRenderTime << endl << endl;
+        //cout << testWork.completedWork.GetPixel(320, 240).Red << " " << testWork.completedWork.GetPixel(320, 240).Green << " "<< testWork.completedWork.GetPixel(320, 240).Blue;
+        string Filename = i.ToString() + ".bmp";
+        testWork.completedWork.WriteToFile(Filename.c_str());
+    }
     system("PAUSE");
-    cout << testWork.completedWork.TellHeight() << endl << testWork.completedWork.TellWidth();
-    //cout << testWork.completedWork.GetPixel(320, 240).Red << " " << testWork.completedWork.GetPixel(320, 240).Green << " "<< testWork.completedWork.GetPixel(320, 240).Blue;
-    testWork.completedWork.WriteToFile("testRender10.bmp");
 
 
     //LLDo xPan = 0;//-1.74006238257933990522084416706582563829664172043617;
@@ -121,59 +175,62 @@ int MandelRender(workOrder_t *w){
             break;
         case 1:
             w->completedWork.SetSize(w->FrameWidth, w->FrameHeight);
+
+            //iterate through pixels in frame where x = i and j = y
+            for(unsigned long long int i = 0; i < w->FrameWidth; i++){
+                for(unsigned long long int j = 0; j < w->FrameHeight; j++){
+                    w->completedWork.SetPixel(i,j,mandelPixel(w,i,j));
+                }
+                if (i % 100 == 0){
+                    cout << i << "/" << w->FrameWidth << endl;
+                }
+            }
             break;
+
         case 2:
             if (w->isHorizontal){
                 w->completedWork.SetSize(w->FrameWidth, 1);
+
+                for(unsigned long long int j =0; j < w->FrameHeight ; j++){
+                    w->completedWork.SetPixel(w->lineNum,j,mandelPixel(w,w->lineNum,j));
+                    if (j % 20 == 0){
+                        cout << j << "/" << w->FrameHeight << endl;
+                    }
+                }
             } else {
                 w->completedWork.SetSize(1, w->FrameHeight);
+
+                for(unsigned long long int j =0; j < w->FrameWidth ; j++){
+                    w->completedWork.SetPixel(w->lineNum,j,mandelPixel(w,j,w->lineNum));
+                    if (j % 20 == 0){
+                        cout << j << "/" << w->FrameWidth<< endl;
+                    }
+                }
             }
             break;
         case 3:
             w->completedWork.SetSize(1,1);
+
+            w->completedWork.SetPixel(w->pixelX, w->pixelY, mandelPixel(w, w->pixelX, w->pixelY));
             break;
         default:
             return -2;
             break;
     }
 
-    if (w->workType == 1){
-        for(unsigned long long int i = 0; i < w->FrameWidth; i++){
-            for(unsigned long long int j = 0; j < w->FrameHeight; j++){
-                    w->completedWork.SetPixel(i,j,mandelPixel(w,i,j));
-            }
-            if (i % 20 == 0){
-                cout << i << "/" << w->FrameWidth << endl;
-            }
-        }
-    } else if (w->workType == 2){
-        if (w->isHorizontal){
-            for(unsigned long long int j =0; j < w->FrameHeight ; j++){
-                w->completedWork.SetPixel(w->lineNum,j,mandelPixel(w,w->lineNum,j));
-                if (j % 20 == 0){
-                    cout << j << "/" << w->FrameHeight << endl;
-                }
-            }
-        } else {
-            for(unsigned long long int j =0; j < w->FrameWidth ; j++){
-                w->completedWork.SetPixel(w->lineNum,j,mandelPixel(w,j,w->lineNum));
-                if (j % 20 == 0){
-                    cout << j << "/" << w->FrameWidth<< endl;
-                }
-            }
-        }
-    } else {
-        w->completedWork.SetPixel(w->pixelX, w->pixelY, mandelPixel(w, w->pixelX, w->pixelY));
-    }
+    w->timeWorkFinsished = time(NULL);
     return (0);
 }
 
 RGBApixel mandelPixel(workOrder_t *w, unsigned long long int x, unsigned long long int y){
+
+    //these values are used in replacement of constants during view scaling
     mpf_class a, b, c, d;
     a = "3.5";
     b = "2.5";
     c = "2.0";
     d = "1";
+
     RGBApixel output;
     //Variable Declaration, values to be determined in loop
     mpf_class x0, y0, xtemp, mpfX, mpfY, i, j, _x, _y;
@@ -183,8 +240,10 @@ RGBApixel mandelPixel(workOrder_t *w, unsigned long long int x, unsigned long lo
 
     mpf_class zoomFactor;
     zoomFactor = w->zoomFactor;
+
     mpf_class xPan;
     xPan = w->xCord;
+
     mpf_class yPan;
     yPan = w->yCord;
 
@@ -195,20 +254,8 @@ RGBApixel mandelPixel(workOrder_t *w, unsigned long long int x, unsigned long lo
 
     x0 = (mpfX / ( FrW / (a/ zoomFactor))) -(b/ zoomFactor) + xPan;
     y0 = (mpfY /  (FrH / (c/zoomFactor))) - (d/zoomFactor) + yPan;
-   // mpf_out_str(stdout, 10, 0, mpfX.get_mpf_t());
-    //cout << endl;
-    //mpf_out_str(stdout, 10, 0, mpfY.get_mpf_t());
-    //cout << endl;
-    //mpf_out_str(stdout, 10, 0, x0.get_mpf_t());
-    //cout << endl;
-    //mpf_out_str(stdout, 10, 0, y0.get_mpf_t());
-    //cout << endl;
-    //system("PAUSE");
 
-
-    x = 0;
-    y = 0;
-    long long iteration = 0;
+    unsigned long long int iteration = 0;
     while((_x*_x) + (_y*_y) < 4 && iteration < w->maximumIterations){
         xtemp = (_x*_x) - (_y*_y) + x0;
         _y = (c*_x*_y) + y0;
@@ -216,8 +263,7 @@ RGBApixel mandelPixel(workOrder_t *w, unsigned long long int x, unsigned long lo
         _x = xtemp;
         iteration++;
     }
-    //cout << iteration << " " << max_iteration << endl << 255 - (iteration / ((max_iteration/2) / 255)) << endl;
-    //system("PAUSE");
+
     if (iteration >= w->maximumIterations){
         output.Red = 0;
         output.Green = 0;
@@ -242,4 +288,53 @@ string doubleToString(long double val){
     stringstream ss;
     ss << val;
     return  ss.str();
+}
+
+bool ConnectToHost(int PortNo, char* IPAddress){
+     //Start up Winsock…
+    WSADATA wsadata;
+
+    int error = WSAStartup(0x0202, &wsadata);
+
+    //Did something happen?
+    if (error){
+        return false;
+    }
+
+    //Did we get the right Winsock version?
+    if (wsadata.wVersion != 0x0202){
+        WSACleanup(); //Clean up Winsock
+        return false;
+    }
+
+    //Fill out the information needed to initialize a socket…
+    SOCKADDR_IN target; //Socket address information
+
+    target.sin_family = AF_INET; // address family Internet
+    target.sin_port = htons (PortNo); //Port to connect on
+    target.sin_addr.s_addr = inet_addr (IPAddress); //Target IP
+
+    s = socket (AF_INET, SOCK_STREAM, IPPROTO_TCP); //Create socket
+    if (s == INVALID_SOCKET)
+    {
+        return false; //Couldn't create the socket
+    }
+
+    //Try connecting...
+
+    if (connect(s, (SOCKADDR *)&target, sizeof(target)) == SOCKET_ERROR)
+    {
+        return false; //Couldn't connect
+    }
+    else
+        return true; //Success
+}
+
+void CloseConnection ()
+{
+    //Close the socket if it exists
+    if (s)
+        closesocket(s);
+
+    WSACleanup(); //Clean up Winsock
 }

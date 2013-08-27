@@ -83,7 +83,7 @@
 	<cstddef>
 	<stddef.h>
 
-1376546137 source:c:\users\justin_becker\dropbox\github\mandelbrot_set_renderer\cpu render client\main.cpp
+1377181308 source:c:\users\justin_becker\dropbox\github\mandelbrot_set_renderer\cpu render client\main.cpp
 	<iostream>
 	<stdio.h>
 	"depend\EasyBMP\EasyBMP.h"
@@ -94,6 +94,7 @@
 	<string>
 	<sstream>
 	"depend\ttmath\ttmath\ttmath.h"
+	<winsock.h>
 	"gmpxx.h"
 
 1375731551 c:\users\justin_becker\dropbox\github\mandelbrot_set_renderer\cpu render client\easybmp\easybmp.h
