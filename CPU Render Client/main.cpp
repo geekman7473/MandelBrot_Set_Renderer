@@ -9,6 +9,8 @@
 #include <sstream>
 #include "depend\ttmath\ttmath\ttmath.h"
 #include <winsock.h>
+#include <process.h>
+#include <windows.h>
 
 //Project Build options specify the location of gmp.h
 #include "gmpxx.h"
@@ -16,7 +18,7 @@
 using namespace std;
 
 //TODO: this setting should be externally defined by a config.ini file
-#define maxThreads 6
+int MAXTHREADS = 2;
 
 
 //global socket for communication to central server
@@ -24,14 +26,6 @@ SOCKET s;
 
 //Type for use with TTMATH library. This is slower but seems to be more C++ compliant
 typedef ttmath::Big<TTMATH_BITS(32), TTMATH_BITS(1024)> LLDo;
-
-struct workerThread{
-    //maximum number of threads to be used
-    unsigned int maxThreads;
-
-    //the value from 0 to maxThreads - 1 indicating this threads position.
-    unsigned int threadID;
-};
 
 struct workOrder_t {
     //defines the type of work the client is required to do
@@ -70,22 +64,73 @@ struct workOrder_t {
     //Finished work will be stored in this variable for transmission back to the Project Coordination Server
     BMP completedWork;
 
+    //counts the number of iterations used to finish the render
+    unsigned long long int totalIterationsUsed;
+
     //total size of workOrder_t is at minimum 60 Bytes, size varies greatly depending on the length of its string components
+
+    workOrder_t(const workOrder_t& other){
+        workType = other.workType;
+        xCord = other.xCord;
+        yCord = other.yCord;
+        FrameWidth = other.FrameWidth;
+        FrameHeight = other.FrameHeight;
+        zoomFactor = other.zoomFactor;
+        maximumIterations = other.maximumIterations;
+        lineNum = other.lineNum;
+        pixelX = other.pixelX;
+        pixelY = other.pixelY;
+        timeReceived = other.timeReceived;
+        timeWorkStarted = other.timeWorkStarted;
+        timeWorkFinsished = other.timeWorkFinsished;
+        completedWork = other.completedWork;
+    }
+    workOrder_t(){
+    }
 };
 
+struct workerThread{
+    //maximum number of threads to be used
+    unsigned int maxThreads;
+    //the value from 0 to maxThreads - 1 indicating this threads position.
+    unsigned int threadID;
+    //string which main function can access and print to display overall worker node progress
+    string workProgress;
+    //totaltime spent rendering
+    unsigned long long int totalRenderTime;
+
+    //seed for use in all random operations
+    unsigned long long randSeed;
+
+
+    //for debug in severless test scenarios
+    workOrder_t testWork;
+    long int testFramesToRender;
+
+    workerThread(){
+        maxThreads = 0;
+        threadID = 0;
+        totalRenderTime =0;
+        workProgress = "";
+        randSeed = 0;
+    }
+};
+
+void threadWorker(workerThread* wT);
 bool ConnectToHost(int PortNo, char* IPAddress);
 void CloseConnection ();
 string intToString(long long int val);
 string doubleToString(long double val);
 int MandelRender(workOrder_t *w);
 RGBApixel mandelPixel(workOrder_t *w, unsigned long long int x, unsigned long long int y);
+unsigned long long randMult();
 
 int main(){
 
 //cin.get();
     //mpf_set()
 
-    workOrder_t testWork;
+    /*workOrder_t testWork;
     testWork.workType = 1;
     testWork.xCord = "-1.5";
     testWork.yCord = "0";
@@ -99,18 +144,50 @@ int main(){
     cout << endl << "Specify height: ";
     cin >> testWork.FrameHeight;
     cout << endl << "Specify MaxIter: ";
-    cin >> testWork.maximumIterations;
+    cin >> testWork.maximumIterations; */
 
 
-    LLDo MAX_ZOOM;
+    /*LLDo MAX_ZOOM;
     MAX_ZOOM = 2;
     for(int i = 0; i < 600; i++ ){
         MAX_ZOOM *= 2;
     }
-    cout << MAX_ZOOM << endl;
+    cout << MAX_ZOOM << endl;*/
+    cout << "Enter Maximum threads number of render threads: ";
+    cin >> MAXTHREADS;
+
     unsigned long long int totalRenderTime = 0;
 
-    for(LLDo i = 0; i < 9000; i++){
+    HANDLE threads[255];
+
+    workerThread workers [255];
+
+    //cout << test << "  " << test + 1 << endl << *test
+
+    workOrder_t _temp;
+    cout << "Enter frame width and height seperated by a space: ";
+    cin >> _temp.FrameWidth >> _temp.FrameHeight;
+
+    cout << "Enter x and y cordinates seperated by a space: ";
+    cin >> _temp.xCord >>_temp.yCord;
+
+    cout << "Enter Maximum number of iterations (10000 reccomended): ";
+    cin  >> _temp.maximumIterations;
+
+    for(int i = 0; i < MAXTHREADS; i++){
+        workers[i].maxThreads = MAXTHREADS;
+        workers[i].threadID = i;
+        workers[i].totalRenderTime =0;
+        workers[i].workProgress = "";
+
+        workers[i].testWork = _temp;
+
+        cout << "Enter Rand seed for thread #" << i;
+        cin >> workers[i].randSeed;
+        threads[i] = (HANDLE)_beginthread((void(*)(void*))threadWorker, 0, (void*)&workers[i]);
+    }
+    WaitForMultipleObjects(MAXTHREADS, threads,true, INFINITE);
+    /*for(LLDo i = 0; i < 9000; i++){
         if(i.ToInt() % 30 != 0){
             LLDo temp = testWork.zoomFactor;
             LLDo temp2, temp4;
@@ -142,7 +219,7 @@ int main(){
         //cout << testWork.completedWork.GetPixel(320, 240).Red << " " << testWork.completedWork.GetPixel(320, 240).Green << " "<< testWork.completedWork.GetPixel(320, 240).Blue;
         string Filename = i.ToString() + ".bmp";
         testWork.completedWork.WriteToFile(Filename.c_str());
-    }
+    } */
     system("PAUSE");
 
 
@@ -182,7 +259,7 @@ int MandelRender(workOrder_t *w){
                     w->completedWork.SetPixel(i,j,mandelPixel(w,i,j));
                 }
                 if (i % 100 == 0){
-                    cout << i << "/" << w->FrameWidth << endl;
+                    //cout << i << "/" << w->FrameWidth << endl;
                 }
             }
             break;
@@ -194,7 +271,7 @@ int MandelRender(workOrder_t *w){
                 for(unsigned long long int j =0; j < w->FrameHeight ; j++){
                     w->completedWork.SetPixel(w->lineNum,j,mandelPixel(w,w->lineNum,j));
                     if (j % 20 == 0){
-                        cout << j << "/" << w->FrameHeight << endl;
+                        //cout << j << "/" << w->FrameHeight << endl;
                     }
                 }
             } else {
@@ -203,7 +280,7 @@ int MandelRender(workOrder_t *w){
                 for(unsigned long long int j =0; j < w->FrameWidth ; j++){
                     w->completedWork.SetPixel(w->lineNum,j,mandelPixel(w,j,w->lineNum));
                     if (j % 20 == 0){
-                        cout << j << "/" << w->FrameWidth<< endl;
+                       // cout << j << "/" << w->FrameWidth<< endl;
                     }
                 }
             }
@@ -276,6 +353,7 @@ RGBApixel mandelPixel(workOrder_t *w, unsigned long long int x, unsigned long lo
         temp -= output.Green * 255;
         output.Blue = temp;
     }
+    w->totalIterationsUsed += iteration;
     return output;
 }
 
@@ -337,4 +415,39 @@ void CloseConnection ()
         closesocket(s);
 
     WSACleanup(); //Clean up Winsock
+}
+
+void threadWorker(workerThread* wT){
+//get workorders from server here
+//server work will populate workList
+    vector<workOrder_t> workList;
+
+    workOrder_t tempWork;
+    tempWork.workType = 1;
+    tempWork.xCord = wT -> testWork.xCord;
+    tempWork.yCord = wT -> testWork.yCord;
+    tempWork.FrameWidth = wT -> testWork.FrameWidth;
+    tempWork.FrameHeight = wT -> testWork.FrameHeight;
+    tempWork.maximumIterations = wT -> testWork.maximumIterations;
+
+    srand(wT ->randSeed);
+
+    for(int i = 0; i < 100; i++){
+        tempWork.zoomFactor = intToString(randMult());
+        workList.push_back(workOrder_t(tempWork));
+    }
+
+    for(vector<workOrder_t>::iterator it = workList.begin(); it != workList.end(); ++it){
+        it -> totalIterationsUsed = 0;
+        MandelRender(&(*it));
+        wT ->totalRenderTime +=  it ->timeWorkFinsished - it ->timeWorkStarted;
+        string filename = intToString(it ->FrameWidth) + "x" + intToString(it ->FrameHeight) +" " + it ->xCord + "," + it ->yCord + "&" + it ->zoomFactor + "@" + intToString(it ->maximumIterations) + ".bmp";
+        it ->completedWork.WriteToFile(filename.c_str());
+        //string status = "Thread #" + intToString(wT ->threadID) + " completed in " + intToString(it ->timeWorkFinsished - it ->timeWorkStarted) + " seconds./nTotal iterations: " + it ->totalIterationsUsed.ToString;
+        cout << "Thread #" << intToString(wT ->threadID) << " completed in " << intToString(it ->timeWorkFinsished - it ->timeWorkStarted) << " seconds" << endl << "Total iterations: " << intToString(it ->totalIterationsUsed) << endl << it ->totalIterationsUsed /(it ->timeWorkFinsished - it ->timeWorkStarted) << " it/s" << endl << (it ->completedWork.TellHeight() * it ->completedWork.TellWidth()) / (it ->timeWorkFinsished - it ->timeWorkStarted) << " px/s" << endl<< endl ;
+    }
+}
+
+unsigned long long randMult(){
+    return (unsigned long long)((rand()) + (rand() * 16)); //+ (rand() * 524288) + (rand() * 17179869184) + (rand()* 562949953421312));
 }
