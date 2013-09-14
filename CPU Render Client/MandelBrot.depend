@@ -83,7 +83,7 @@
 	<cstddef>
 	<stddef.h>
 
-1377665187 source:c:\users\justin_becker\dropbox\github\mandelbrot_set_renderer\cpu render client\main.cpp
+1378824283 source:c:\users\justin_becker\dropbox\github\mandelbrot_set_renderer\cpu render client\main.cpp
 	<iostream>
 	<stdio.h>
 	"depend\EasyBMP\EasyBMP.h"
@@ -95,8 +95,8 @@
 	<sstream>
 	"depend\ttmath\ttmath\ttmath.h"
 	<winsock.h>
-	<process.h>
 	<windows.h>
+	<process.h>
 	"gmpxx.h"
 
 1375731551 c:\users\justin_becker\dropbox\github\mandelbrot_set_renderer\cpu render client\easybmp\easybmp.h
@@ -354,4 +354,97 @@
 1376262181 c:\users\609416\dropbox\github\mandelbrot_set_renderer\cpu render client\depend\easybmp\easybmp_bmp.h
 
 1376262181 c:\users\609416\dropbox\github\mandelbrot_set_renderer\cpu render client\depend\easybmp\easybmp_variousbmputilities.h
+
+1378824283 source:c:\users\609416\dropbox\github\mandelbrot_set_renderer\cpu render client\main.cpp
+	<iostream>
+	<stdio.h>
+	"depend\EasyBMP\EasyBMP.h"
+	<stdio.h>
+	<time.h>
+	<assert.h>
+	<cstdlib>
+	<string>
+	<sstream>
+	"depend\ttmath\ttmath\ttmath.h"
+	<winsock.h>
+	<windows.h>
+	<process.h>
+	"gmpxx.h"
+
+1376262181 c:\users\609416\dropbox\github\mandelbrot_set_renderer\cpu render client\depend\ttmath\ttmath\ttmath.h
+	"ttmathbig.h"
+	"ttmathobjects.h"
+	"ttmathparser.h"
+
+1376262181 c:\users\609416\dropbox\github\mandelbrot_set_renderer\cpu render client\depend\ttmath\ttmath\ttmathbig.h
+	"ttmathint.h"
+	"ttmaththreads.h"
+	<iostream>
+	<signal.h>
+
+1376262181 c:\users\609416\dropbox\github\mandelbrot_set_renderer\cpu render client\depend\ttmath\ttmath\ttmathint.h
+	"ttmathuint.h"
+
+1376262181 c:\users\609416\dropbox\github\mandelbrot_set_renderer\cpu render client\depend\ttmath\ttmath\ttmathuint.h
+	<iostream>
+	<iomanip>
+	"ttmathtypes.h"
+	"ttmathmisc.h"
+	"ttmathuint_x86.h"
+	"ttmathuint_x86_64.h"
+	"ttmathuint_noasm.h"
+
+1376262181 c:\users\609416\dropbox\github\mandelbrot_set_renderer\cpu render client\depend\ttmath\ttmath\ttmathtypes.h
+	<stdexcept>
+	<sstream>
+	<vector>
+	<stdint.h>
+
+1376262181 c:\users\609416\dropbox\github\mandelbrot_set_renderer\cpu render client\depend\ttmath\ttmath\ttmathmisc.h
+	<string>
+
+1376262181 c:\users\609416\dropbox\github\mandelbrot_set_renderer\cpu render client\depend\ttmath\ttmath\ttmathuint_x86.h
+
+1376262181 c:\users\609416\dropbox\github\mandelbrot_set_renderer\cpu render client\depend\ttmath\ttmath\ttmathuint_x86_64.h
+	<intrin.h>
+
+1376262181 c:\users\609416\dropbox\github\mandelbrot_set_renderer\cpu render client\depend\ttmath\ttmath\ttmathuint_noasm.h
+
+1376262181 c:\users\609416\dropbox\github\mandelbrot_set_renderer\cpu render client\depend\ttmath\ttmath\ttmaththreads.h
+	"ttmathtypes.h"
+	<windows.h>
+	<cstdio>
+	<pthread.h>
+	<ttmath/ttmath.h>
+
+1376262181 c:\users\609416\dropbox\github\mandelbrot_set_renderer\cpu render client\depend\ttmath\ttmath\ttmathobjects.h
+	<string>
+	<vector>
+	<list>
+	<map>
+	"ttmathtypes.h"
+	"ttmathmisc.h"
+
+1376262181 c:\users\609416\dropbox\github\mandelbrot_set_renderer\cpu render client\depend\ttmath\ttmath\ttmathparser.h
+	<cstdio>
+	<vector>
+	<map>
+	<set>
+	"ttmath.h"
+	"ttmathobjects.h"
+	"ttmathmisc.h"
+
+1376413975 c:\users\609416\dropbox\github\mandelbrot_set_renderer\cpu render client\depend\gmp\gmpxx.h
+	<iosfwd>
+	<cstring>
+	<string>
+	<stdexcept>
+	<cfloat>
+	<gmp.h>
+
+1376413975 c:\users\609416\dropbox\github\mandelbrot_set_renderer\cpu render client\depend\gmp\gmp.h
+	<iosfwd>
+	<cstdio>
+	<cstddef>
+	<stddef.h>
 

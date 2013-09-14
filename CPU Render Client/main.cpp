@@ -9,8 +9,8 @@
 #include <sstream>
 #include "depend\ttmath\ttmath\ttmath.h"
 #include <winsock.h>
-#include <process.h>
 #include <windows.h>
+#include <process.h>
 
 //Project Build options specify the location of gmp.h
 #include "gmpxx.h"
@@ -159,7 +159,6 @@ int main(){
     unsigned long long int totalRenderTime = 0;
 
     HANDLE threads[255];
-
     workerThread workers [255];
 
     //cout << test << "  " << test + 1 << endl << *test
