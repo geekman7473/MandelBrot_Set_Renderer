@@ -8,9 +8,9 @@
 #include <string>
 #include <sstream>
 #include "depend\ttmath\ttmath\ttmath.h"
-#include <winsock.h>
 #include <windows.h>
 #include <process.h>
+#include <SFML/Network.hpp>
 
 //Project Build options specify the location of gmp.h
 #include "gmpxx.h"
@@ -20,11 +20,7 @@ using namespace std;
 //TODO: this setting should be externally defined by a config.ini file
 int MAXTHREADS = 2;
 
-
-//global socket for communication to central server
-SOCKET s;
-
-//Type for use with TTMATH library. This is slower but seems to be more C++ compliant
+//Type for use with TTMATH library. This is slower but seems to be more C++ compliantMichelle Elaine Kelly
 typedef ttmath::Big<TTMATH_BITS(32), TTMATH_BITS(1024)> LLDo;
 
 struct workOrder_t {
@@ -117,8 +113,6 @@ struct workerThread{
 };
 
 void threadWorker(workerThread* wT);
-bool ConnectToHost(int PortNo, char* IPAddress);
-void CloseConnection ();
 string intToString(long long int val);
 string doubleToString(long double val);
 int MandelRender(workOrder_t *w);
@@ -153,7 +147,37 @@ int main(){
         MAX_ZOOM *= 2;
     }
     cout << MAX_ZOOM << endl;*/
-    cout << "Enter Maximum threads number of render threads: ";
+    cout << "Enter server IP: ";
+    string tempIP;
+    cin >> tempIP;
+    sf::TcpSocket socket;
+    sf::Socket::Status status = socket.connect(tempIP, 60606);
+    if (status != sf::Socket::Done){
+        cerr << "Socket failed to initialize with remote host...";
+        return(-1);
+    }
+    //char data[11] = {'H', 'e', 'l', 'l', 'o', ' ', 'W', 'o', 'r', 'l', 'd'};
+    //if (socket.send(data, 11) != sf::Socket::Done){
+    //    cerr << "Data Transmit failed";
+    //    return(-2);
+    //}
+    while(true){
+        string message;
+        getline(cin,message);
+        for(int i = 0; i< message.size(); i++){
+            if(message[i] == ' '){
+                message[i] = '_';
+            }
+        }
+        sf::Packet test;
+        test << message;
+        if (socket.send(test) != sf::Socket::Done){
+            cerr << "Data Transmit failed";
+            return(-2);
+        }
+    }
+
+    cout << "Enter Maximum number of render threads: ";
     cin >> MAXTHREADS;
 
     unsigned long long int totalRenderTime = 0;
@@ -183,6 +207,10 @@ int main(){
 
         cout << "Enter Rand seed for thread #" << i;
         cin >> workers[i].randSeed;
+        cout << sizeof _temp << endl;
+        _temp.zoomFactor = "1000000000";
+        cout << sizeof _temp << endl;
+        system("PAUSE");
         threads[i] = (HANDLE)_beginthread((void(*)(void*))threadWorker, 0, (void*)&workers[i]);
     }
     WaitForMultipleObjects(MAXTHREADS, threads,true, INFINITE);
@@ -365,55 +393,6 @@ string doubleToString(long double val){
     stringstream ss;
     ss << val;
     return  ss.str();
-}
-
-bool ConnectToHost(int PortNo, char* IPAddress){
-     //Start up Winsock…
-    WSADATA wsadata;
-
-    int error = WSAStartup(0x0202, &wsadata);
-
-    //Did something happen?
-    if (error){
-        return false;
-    }
-
-    //Did we get the right Winsock version?
-    if (wsadata.wVersion != 0x0202){
-        WSACleanup(); //Clean up Winsock
-        return false;
-    }
-
-    //Fill out the information needed to initialize a socket…
-    SOCKADDR_IN target; //Socket address information
-
-    target.sin_family = AF_INET; // address family Internet
-    target.sin_port = htons (PortNo); //Port to connect on
-    target.sin_addr.s_addr = inet_addr (IPAddress); //Target IP
-
-    s = socket (AF_INET, SOCK_STREAM, IPPROTO_TCP); //Create socket
-    if (s == INVALID_SOCKET)
-    {
-        return false; //Couldn't create the socket
-    }
-
-    //Try connecting...
-
-    if (connect(s, (SOCKADDR *)&target, sizeof(target)) == SOCKET_ERROR)
-    {
-        return false; //Couldn't connect
-    }
-    else
-        return true; //Success
-}
-
-void CloseConnection ()
-{
-    //Close the socket if it exists
-    if (s)
-        closesocket(s);
-
-    WSACleanup(); //Clean up Winsock
 }
 
 void threadWorker(workerThread* wT){

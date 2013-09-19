@@ -13,9 +13,13 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-g" />
+					<Add directory="depend/SFML-2.1/include" />
 				</Compiler>
 				<Linker>
 					<Add library="ws2_32" />
+					<Add library="sfml-network" />
+					<Add library="sfml-system" />
+					<Add directory="depend/SFML-2.1/lib" />
 				</Linker>
 			</Target>
 			<Target title="Release">
