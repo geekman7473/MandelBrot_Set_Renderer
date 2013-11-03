@@ -11,6 +11,7 @@
 #include <windows.h>
 #include <process.h>
 #include <SFML/Network.hpp>
+#include "workOrder.cpp"
 
 //Project Build options specify the location of gmp.h
 #include "gmpxx.h"
@@ -23,69 +24,9 @@ int MAXTHREADS = 2;
 //Type for use with TTMATH library. This is slower but seems to be more C++ compliantMichelle Elaine Kelly
 typedef ttmath::Big<TTMATH_BITS(32), TTMATH_BITS(1024)> LLDo;
 
-struct workOrder_t {
-    //defines the type of work the client is required to do
-    //1 = full frame render
-    //2 = scan line
-    //3 = pixel
-    //0 = Null Work, when encountered these work allocations should be ignored
-    // -1 = Error, when encountered these work allocations should be ignored
-    short int workType;
-    //This string represents the coordinates of the center point of the current frame
-    //for pixel and scan line renders, the work assigned will be determined by the full
-    //frame determined by these coordinates, as well as dimensions and zoomFactor
-    string xCord, yCord;
-    //these value determine the width and height of the "frame of reference"
-    unsigned long long int FrameWidth, FrameHeight;
-    //this value determines the zoomFactor for the frame of reference upon which the work is to be based
-    string zoomFactor;
-    //Determines the maximum iterations for the work
-    unsigned long long int maximumIterations;
-
-    //For type 2 work orders only: specifies whether renders are horizontal or vertical lines from the "frame of reference"
-    bool isHorizontal;
-    //For type 2 work orders only: specifies the numerical value of the line to be rendered
-    unsigned long long int lineNum;
-
-    //For type 3 work orders only: specifies the coordinates of the pixel to be rendered from the "frame of reference"
-    unsigned long long int pixelX, pixelY;
-
-    //Time as a Unix timestamp that the work order was recieved from the Project Coordination Server
-    unsigned long long int timeReceived;
-    //Time as a Unix timestamp that the worker began working on the work order
-    unsigned long long int timeWorkStarted;
-    //Time as a Unix timestamp that the worker finished work on the work order
-    unsigned long long int timeWorkFinsished;
-
-    //Finished work will be stored in this variable for transmission back to the Project Coordination Server
-    BMP completedWork;
-
-    //counts the number of iterations used to finish the render
-    unsigned long long int totalIterationsUsed;
-
-    //total size of workOrder_t is at minimum 60 Bytes, size varies greatly depending on the length of its string components
-
-    workOrder_t(const workOrder_t& other){
-        workType = other.workType;
-        xCord = other.xCord;
-        yCord = other.yCord;
-        FrameWidth = other.FrameWidth;
-        FrameHeight = other.FrameHeight;
-        zoomFactor = other.zoomFactor;
-        maximumIterations = other.maximumIterations;
-        lineNum = other.lineNum;
-        pixelX = other.pixelX;
-        pixelY = other.pixelY;
-        timeReceived = other.timeReceived;
-        timeWorkStarted = other.timeWorkStarted;
-        timeWorkFinsished = other.timeWorkFinsished;
-        completedWork = other.completedWork;
-    }
-    workOrder_t(){
-    }
-};
-
 struct workerThread{
+    //ip of managment server
+    string serverIp;
     //maximum number of threads to be used
     unsigned int maxThreads;
     //the value from 0 to maxThreads - 1 indicating this threads position.
@@ -118,6 +59,8 @@ string doubleToString(long double val);
 int MandelRender(workOrder_t *w);
 RGBApixel mandelPixel(workOrder_t *w, unsigned long long int x, unsigned long long int y);
 unsigned long long randMult();
+sf::Packet& operator <<(sf::Packet& packet, BMP& m);
+sf::Packet& operator >>(sf::Packet& packet, workOrder_t& m);
 
 int main(){
 
@@ -149,33 +92,6 @@ int main(){
     cout << MAX_ZOOM << endl;*/
     cout << "Enter server IP: ";
     string tempIP;
-    cin >> tempIP;
-    sf::TcpSocket socket;
-    sf::Socket::Status status = socket.connect(tempIP, 60606);
-    if (status != sf::Socket::Done){
-        cerr << "Socket failed to initialize with remote host...";
-        return(-1);
-    }
-    //char data[11] = {'H', 'e', 'l', 'l', 'o', ' ', 'W', 'o', 'r', 'l', 'd'};
-    //if (socket.send(data, 11) != sf::Socket::Done){
-    //    cerr << "Data Transmit failed";
-    //    return(-2);
-    //}
-    while(true){
-        string message;
-        getline(cin,message);
-        for(int i = 0; i< message.size(); i++){
-            if(message[i] == ' '){
-                message[i] = '_';
-            }
-        }
-        sf::Packet test;
-        test << message;
-        if (socket.send(test) != sf::Socket::Done){
-            cerr << "Data Transmit failed";
-            return(-2);
-        }
-    }
 
     cout << "Enter Maximum number of render threads: ";
     cin >> MAXTHREADS;
@@ -202,7 +118,7 @@ int main(){
         workers[i].threadID = i;
         workers[i].totalRenderTime =0;
         workers[i].workProgress = "";
-
+        workers[i].serverIp = tempIP;
         workers[i].testWork = _temp;
 
         cout << "Enter Rand seed for thread #" << i;
@@ -334,7 +250,6 @@ RGBApixel mandelPixel(workOrder_t *w, unsigned long long int x, unsigned long lo
     b = "2.5";
     c = "2.0";
     d = "1";
-
     RGBApixel output;
     //Variable Declaration, values to be determined in loop
     mpf_class x0, y0, xtemp, mpfX, mpfY, i, j, _x, _y;
@@ -396,36 +311,122 @@ string doubleToString(long double val){
 }
 
 void threadWorker(workerThread* wT){
-//get workorders from server here
-//server work will populate workList
+    string cachedProjectName; //stores the project name for the most recently conencted to server
     vector<workOrder_t> workList;
 
-    workOrder_t tempWork;
-    tempWork.workType = 1;
-    tempWork.xCord = wT -> testWork.xCord;
-    tempWork.yCord = wT -> testWork.yCord;
-    tempWork.FrameWidth = wT -> testWork.FrameWidth;
-    tempWork.FrameHeight = wT -> testWork.FrameHeight;
-    tempWork.maximumIterations = wT -> testWork.maximumIterations;
+    while(true){
+        sf::TcpSocket socket;
 
-    srand(wT ->randSeed);
+        sf::Socket::Status status = socket.connect(wT ->serverIp, 60606);
 
-    for(int i = 0; i < 100; i++){
-        tempWork.zoomFactor = intToString(randMult());
-        workList.push_back(workOrder_t(tempWork));
-    }
+        while (status != sf::Socket::Done){
+            cerr << "Socket failed to initialize with remote host. Retrying...";
+            sf::Socket::Status status = socket.connect(wT ->serverIp, 60606);
+        }
 
-    for(vector<workOrder_t>::iterator it = workList.begin(); it != workList.end(); ++it){
-        it -> totalIterationsUsed = 0;
-        MandelRender(&(*it));
-        wT ->totalRenderTime +=  it ->timeWorkFinsished - it ->timeWorkStarted;
-        string filename = intToString(it ->FrameWidth) + "x" + intToString(it ->FrameHeight) +" " + it ->xCord + "," + it ->yCord + "&" + it ->zoomFactor + "@" + intToString(it ->maximumIterations) + ".bmp";
-        it ->completedWork.WriteToFile(filename.c_str());
-        //string status = "Thread #" + intToString(wT ->threadID) + " completed in " + intToString(it ->timeWorkFinsished - it ->timeWorkStarted) + " seconds./nTotal iterations: " + it ->totalIterationsUsed.ToString;
-        cout << "Thread #" << intToString(wT ->threadID) << " completed in " << intToString(it ->timeWorkFinsished - it ->timeWorkStarted) << " seconds" << endl << "Total iterations: " << intToString(it ->totalIterationsUsed) << endl << it ->totalIterationsUsed /(it ->timeWorkFinsished - it ->timeWorkStarted) << " it/s" << endl << (it ->completedWork.TellHeight() * it ->completedWork.TellWidth()) / (it ->timeWorkFinsished - it ->timeWorkStarted) << " px/s" << endl<< endl ;
+        sf::Packet serverDetails;
+
+        while (socket.receive(serverDetails) != sf::Socket::Done) {
+            cerr << "Failed to receive server_Details. Retrying...";
+        }
+
+        sf::Packet clientDetails;
+        clientDetails << wT -> threadID;
+
+        while(socket.send(clientDetails) != sf::Socket::Done){
+            cerr << "Failed to send client_Details. Retrying...";
+        }
+
+        string tempProjectName;
+        serverDetails >> tempProjectName;
+
+        if(tempProjectName == cachedProjectName){
+            sf::Packet sendWork;
+            for(vector<workOrder_t>::iterator it = workList.begin(); it != workList.end(); ++it){
+                if(it ->workType != 0 && it ->workType != -1){
+                    sendWork << 2 << 1 << it ->completedWork;
+                }
+            }
+            socket.send(sendWork);
+        } else {
+            sf::Packet sendNullWork;
+            sendNullWork << 2 << 0;
+            socket.send(sendNullWork);
+        }
+
+        sf::Packet workReception;
+
+        while (socket.receive(workReception) != sf::Socket::Done) {
+            cerr << "Failed to receive work allocation. Retrying...";
+        }
+
+        socket.disconnect();
+
+        int workQuant = 0;
+        workReception >> workQuant;
+
+        workList.clear();
+
+        for(long int i = 0; i < workQuant; i++){
+            workOrder_t temp;
+            workReception >> temp;
+            workList.push_back(temp);
+        }
+
+
+
+    //get workorders from server here
+    //server work will populate workList
+
+        /*workOrder_t tempWork;
+        tempWork.workType = 1;
+        tempWork.xCord = wT -> testWork.xCord;
+        tempWork.yCord = wT -> testWork.yCord;
+        tempWork.FrameWidth = wT -> testWork.FrameWidth;
+        tempWork.FrameHeight = wT -> testWork.FrameHeight;
+        tempWork.maximumIterations = wT -> testWork.maximumIterations;
+
+        srand(wT ->randSeed);
+
+        for(int i = 0; i < 100; i++){
+            tempWork.zoomFactor = intToString(randMult());
+            workList.push_back(workOrder_t(tempWork));
+        }
+*/
+        for(vector<workOrder_t>::iterator it = workList.begin(); it != workList.end(); ++it){
+            it -> totalIterationsUsed = 0;
+            MandelRender(&(*it));
+            wT ->totalRenderTime +=  it ->timeWorkFinsished - it ->timeWorkStarted;
+            string filename = intToString(it ->FrameWidth) + "x" + intToString(it ->FrameHeight) +" " + it ->xCord + "," + it ->yCord + "&" + it ->zoomFactor + "@" + intToString(it ->maximumIterations) + ".bmp";
+            it ->completedWork.WriteToFile(filename.c_str());
+            //string status = "Thread #" + intToString(wT ->threadID) + " completed in " + intToString(it ->timeWorkFinsished - it ->timeWorkStarted) + " seconds./nTotal iterations: " + it ->totalIterationsUsed.ToString;
+            cout << "Thread #" << intToString(wT ->threadID) << " completed in " << intToString(it ->timeWorkFinsished - it ->timeWorkStarted) << " seconds" << endl << "Total iterations: " << intToString(it ->totalIterationsUsed) << endl << it ->totalIterationsUsed /(it ->timeWorkFinsished - it ->timeWorkStarted) << " it/s" << endl << (it ->completedWork.TellHeight() * it ->completedWork.TellWidth()) / (it ->timeWorkFinsished - it ->timeWorkStarted) << " px/s" << endl<< endl ;
+        }
     }
 }
 
 unsigned long long randMult(){
     return (unsigned long long)((rand()) + (rand() * 16)); //+ (rand() * 524288) + (rand() * 17179869184) + (rand()* 562949953421312));
+}
+
+sf::Packet& operator<< (sf::Packet& packet,  BMP& m){
+    packet << m.TellHeight() << m.TellWidth();
+    for(long i = 0; i < m.TellWidth(); i++){
+        for(long j = 0; j < m.TellHeight(); j++){
+                packet << m.GetPixel(i, j).Red << m.GetPixel(i, j).Green << m.GetPixel(i, j).Blue << m.GetPixel(i, j).Alpha ;
+        }
+    }
+}
+
+sf::Packet& operator>> (sf::Packet& packet, workOrder_t& m){
+    return packet >> m.workType >> m.xCord >> m.yCord >> m.FrameWidth >> m.FrameHeight >> m.zoomFactor >> m.maximumIterations >> m.isHorizontal >> m.lineNum >> m.pixelX >> m.pixelY >> m.timeReceived >> m.timeWorkStarted >> m.timeWorkFinsished;
+}
+
+sf::Packet& operator <<(sf::Packet& packet, const unsigned long long int& m)
+{
+    return packet << (UINT32)m/4294967296 <<(((UINT32)m * 4294967296) / 4294967296)<< m.str;
+}
+sf::Packet& operator >>(sf::Packet& packet, unsigned long long int& m)
+{
+    return packet >> (UINT32)m * 4294967296 >> (UINT32)m >> m.str;
 }
