@@ -1,5 +1,5 @@
-#IFNDEF WORKORDER_T
-#DEFINE WORKORDER_T
+#ifndef WORKORDER_T
+#define WORKORDER_T
 
 class workOrder_t {
 
@@ -11,42 +11,46 @@ class workOrder_t {
         //3 = pixel
         //0 = Null Work, when encountered these work allocations should be ignored
         // -1 = Error, when encountered these work allocations should be ignored
-        short int workType;
+        sf::Int8 workType;
         //This string represents the coordinates of the center point of the current frame
         //for pixel and scan line renders, the work assigned will be determined by the full
         //frame determined by these coordinates, as well as dimensions and zoomFactor
-        string xCord, yCord;
+        std::string xCord, yCord;
         //these value determine the width and height of the "frame of reference"
-        unsigned long long int FrameWidth, FrameHeight;
+        sf::Uint64 FrameWidth, FrameHeight;
         //this value determines the zoomFactor for the frame of reference upon which the work is to be based
-        string zoomFactor;
+        std::string zoomFactor;
         //Determines the maximum iterations for the work
-        unsigned long long int maximumIterations;
+        sf::Uint64 maximumIterations;
+
+		// Work Identification Number - number assigned to work orders in order to uniquely identify them
+		std::string WIN;
 
         //For type 2 work orders only: specifies whether renders are horizontal or vertical lines from the "frame of reference"
         bool isHorizontal;
         //For type 2 work orders only: specifies the numerical value of the line to be rendered
-        unsigned long long int lineNum;
+        sf::Uint64 lineNum;
 
         //For type 3 work orders only: specifies the coordinates of the pixel to be rendered from the "frame of reference"
-        unsigned long long int pixelX, pixelY;
+        sf::Uint64 pixelX, pixelY;
 
         //Time as a Unix timestamp that the work order was recieved from the Project Coordination Server
-        unsigned long long int timeReceived;
+        sf::Uint64 timeReceived;
         //Time as a Unix timestamp that the worker began working on the work order
-        unsigned long long int timeWorkStarted;
+        sf::Uint64 timeWorkStarted;
         //Time as a Unix timestamp that the worker finished work on the work order
-        unsigned long long int timeWorkFinsished;
+        sf::Uint64 timeWorkFinsished;
 
         //Finished work will be stored in this variable for transmission back to the Project Coordination Server
         BMP completedWork;
 
         //counts the number of iterations used to finish the render
-        unsigned long long int totalIterationsUsed;
+        sf::Uint64 totalIterationsUsed;
 
         //total size of workOrder_t is at minimum 60 Bytes, size varies greatly depending on the length of its string components
 
         workOrder_t(const workOrder_t& other){
+            WIN = other.WIN;
             workType = other.workType;
             xCord = other.xCord;
             yCord = other.yCord;

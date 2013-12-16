@@ -319,6 +319,7 @@ void threadWorker(workerThread* wT){
 
         sf::Socket::Status status = socket.connect(wT ->serverIp, 60606);
 
+        int retries = 0;
         while (status != sf::Socket::Done){
             cerr << "Socket failed to initialize with remote host. Retrying...";
             sf::Socket::Status status = socket.connect(wT ->serverIp, 60606);
@@ -344,14 +345,14 @@ void threadWorker(workerThread* wT){
             sf::Packet sendWork;
             for(vector<workOrder_t>::iterator it = workList.begin(); it != workList.end(); ++it){
                 if(it ->workType != 0 && it ->workType != -1){
-                    sendWork << 2 << 1 << it ->completedWork;
+                    sendWork << 2 << 1 << it-> WIN <<it ->completedWork;
+                    socket.send(sendWork);
                 }
             }
-            socket.send(sendWork);
         } else {
             sf::Packet sendNullWork;
             sendNullWork << 2 << 0;
-            socket.send(sendNullWork);
+            //socket.send(sendNullWork);
         }
 
         sf::Packet workReception;
@@ -419,14 +420,14 @@ sf::Packet& operator<< (sf::Packet& packet,  BMP& m){
 }
 
 sf::Packet& operator>> (sf::Packet& packet, workOrder_t& m){
-    return packet >> m.workType >> m.xCord >> m.yCord >> m.FrameWidth >> m.FrameHeight >> m.zoomFactor >> m.maximumIterations >> m.isHorizontal >> m.lineNum >> m.pixelX >> m.pixelY >> m.timeReceived >> m.timeWorkStarted >> m.timeWorkFinsished;
+    return packet >> m.workType >> m.xCord >> m.yCord >> m.FrameWidth >> m.FrameHeight >> m.zoomFactor >> m.maximumIterations >> m.WIN >> m.isHorizontal >> m.lineNum >> m.pixelX >> m.pixelY >> m.timeReceived >> m.timeWorkStarted >> m.timeWorkFinsished;
 }
 
-sf::Packet& operator <<(sf::Packet& packet, const unsigned long long int& m)
+/*sf::Packet& operator <<(sf::Packet& packet, const unsigned long long int& m)
 {
     return packet << (UINT32)m/4294967296 <<(((UINT32)m * 4294967296) / 4294967296)<< m.str;
 }
 sf::Packet& operator >>(sf::Packet& packet, unsigned long long int& m)
 {
     return packet >> (UINT32)m * 4294967296 >> (UINT32)m >> m.str;
-}
+}*/

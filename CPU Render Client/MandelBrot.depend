@@ -218,7 +218,7 @@
 	<cstddef>
 	<stddef.h>
 
-1376262181 c:\users\justin_becker\dropbox\github\mandelbrot_set_renderer\cpu render client\depend\easybmp\easybmp.h
+1376258581 c:\users\justin_becker\dropbox\github\mandelbrot_set_renderer\cpu render client\depend\easybmp\easybmp.h
 	<iostream>
 	<cmath>
 	<cctype>
@@ -229,11 +229,11 @@
 	"EasyBMP_BMP.h"
 	"EasyBMP_VariousBMPutilities.h"
 
-1376262181 c:\users\justin_becker\dropbox\github\mandelbrot_set_renderer\cpu render client\depend\easybmp\easybmp_datastructures.h
+1376258581 c:\users\justin_becker\dropbox\github\mandelbrot_set_renderer\cpu render client\depend\easybmp\easybmp_datastructures.h
 
-1376262181 c:\users\justin_becker\dropbox\github\mandelbrot_set_renderer\cpu render client\depend\easybmp\easybmp_bmp.h
+1376258581 c:\users\justin_becker\dropbox\github\mandelbrot_set_renderer\cpu render client\depend\easybmp\easybmp_bmp.h
 
-1376262181 c:\users\justin_becker\dropbox\github\mandelbrot_set_renderer\cpu render client\depend\easybmp\easybmp_variousbmputilities.h
+1376258581 c:\users\justin_becker\dropbox\github\mandelbrot_set_renderer\cpu render client\depend\easybmp\easybmp_variousbmputilities.h
 
 1376262181 c:\users\justin_becker\dropbox\github\mandelbrot_set_renderer\cpu render client\depend\ttmath\ttmath\ttmath.h
 	"ttmathbig.h"
@@ -318,7 +318,7 @@
 	<cstddef>
 	<stddef.h>
 
-1376262181 source:c:\users\justin_becker\dropbox\github\mandelbrot_set_renderer\cpu render client\depend\easybmp\easybmp.cpp
+1376258581 source:c:\users\justin_becker\dropbox\github\mandelbrot_set_renderer\cpu render client\depend\easybmp\easybmp.cpp
 	"EasyBMP.h"
 
 1376413975 c:\users\justin_becker\dropbox\github\mandelbrot_set_renderer\cpu render client\depend\gmp\gmpxx.h
