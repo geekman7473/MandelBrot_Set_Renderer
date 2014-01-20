@@ -32,9 +32,9 @@ int main(){
 
     cout << "Enter server IP: ";
     string tempIP;
-
+    cin >> tempIP;
     int MAXTHREADS = 0;
-    cout << "Enter Maximum number of render threads: ";
+    cout << endl <<"Enter Maximum number of render threads: ";
     cin >> MAXTHREADS;
 
     unsigned long long int totalRenderTime = 0;
@@ -49,6 +49,12 @@ int main(){
         workers[i].workProgress = "";
         workers[i].serverIp = tempIP;
         threadList.push_back(new thread(threadWorker, (void *)&workers[i]));
+    }
+
+    for(vector<thread *>::iterator i = threadList.begin(); i != threadList.end(); ++ i){
+        thread * t = *i;
+        t->join();
+        delete t;
     }
 
     cin.get();

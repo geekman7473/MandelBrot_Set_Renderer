@@ -83,7 +83,7 @@
 	<cstddef>
 	<stddef.h>
 
-1390093562 source:c:\users\justin_becker\dropbox\github\mandelbrot_set_renderer\cpu render client\main.cpp
+1390191559 source:c:\users\justin_becker\dropbox\github\mandelbrot_set_renderer\cpu render client\main.cpp
 	<iostream>
 	<stdio.h>
 	"depend\EasyBMP\EasyBMP.h"
@@ -99,11 +99,11 @@
 	"depend\TinyThread++\tinythread.h"
 	"depend\TinyThread++\tinythread.cpp"
 	"gmpxx.h"
-	"Util.cpp"
-	"workOrder.cpp"
-	"workerThread.cpp"
-	"PacketOps.cpp"
-	"Render.cpp"
+	"Util.hpp"
+	"workOrder.hpp"
+	"workerThread.hpp"
+	"PacketOps.hpp"
+	"Render.hpp"
 
 1375731551 c:\users\justin_becker\dropbox\github\mandelbrot_set_renderer\cpu render client\easybmp\easybmp.h
 	<iostream>
@@ -824,14 +824,14 @@
 	<SFML/System.hpp>
 	<SFML/Network.hpp>
 
-1390191159 source:c:\users\justin_becker\dropbox\github\mandelbrot_set_renderer\cpu render client\render.cpp
+1390191404 source:c:\users\justin_becker\dropbox\github\mandelbrot_set_renderer\cpu render client\render.cpp
 	"Render.hpp"
 	"gmpxx.h"
 	"depend\EasyBMP\EasyBMP.h"
-	"Util.cpp"
-	"workOrder.cpp"
-	"workerThread.cpp"
-	"PacketOps.cpp"
+	"Util.hpp"
+	"workOrder.hpp"
+	"workerThread.hpp"
+	"PacketOps.hpp"
 
 1390191181 source:c:\users\justin_becker\dropbox\github\mandelbrot_set_renderer\cpu render client\util.cpp
 	"Util.hpp"
@@ -853,13 +853,13 @@
 	<map>
 	<process.h>
 
-1390191213 source:c:\users\justin_becker\dropbox\github\mandelbrot_set_renderer\cpu render client\workerthread.cpp
+1390191511 source:c:\users\justin_becker\dropbox\github\mandelbrot_set_renderer\cpu render client\workerthread.cpp
 	"workerThread.hpp"
 	<string>
-	"Util.cpp"
-	"workOrder.cpp"
-	"PacketOps.cpp"
-	"Render.cpp"
+	"Util.hpp"
+	"workOrder.hpp"
+	"PacketOps.hpp"
+	"Render.hpp"
 
 1390191232 source:c:\users\justin_becker\dropbox\github\mandelbrot_set_renderer\cpu render client\workorder.cpp
 	"workOrder.hpp"
@@ -876,23 +876,23 @@
 	<SFML/System.hpp>
 	<SFML/Network.hpp>
 
-1390190568 c:\users\justin_becker\dropbox\github\mandelbrot_set_renderer\cpu render client\workerthread.hpp
+1390191436 c:\users\justin_becker\dropbox\github\mandelbrot_set_renderer\cpu render client\workerthread.hpp
 	<string>
-	"Util.cpp"
-	"workOrder.cpp"
-	"PacketOps.cpp"
-	"Render.cpp"
+	"Util.hpp"
+	"workOrder.hpp"
+	"PacketOps.hpp"
+	"Render.hpp"
 
 1390190196 c:\users\justin_becker\dropbox\github\mandelbrot_set_renderer\cpu render client\packetops.hpp
 	"depend\EasyBMP\EasyBMP.h"
 	<SFML/System.hpp>
 	<SFML/Network.hpp>
 
-1390190387 c:\users\justin_becker\dropbox\github\mandelbrot_set_renderer\cpu render client\render.hpp
+1390191436 c:\users\justin_becker\dropbox\github\mandelbrot_set_renderer\cpu render client\render.hpp
 	"gmpxx.h"
 	"depend\EasyBMP\EasyBMP.h"
-	"Util.cpp"
-	"workOrder.cpp"
-	"workerThread.cpp"
-	"PacketOps.cpp"
+	"Util.hpp"
+	"workOrder.hpp"
+	"workerThread.hpp"
+	"PacketOps.hpp"
 

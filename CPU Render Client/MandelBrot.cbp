@@ -44,12 +44,17 @@
 			<Add option="-fexceptions" />
 		</Compiler>
 		<Unit filename="PacketOps.cpp" />
+		<Unit filename="PacketOps.hpp" />
 		<Unit filename="Render.cpp" />
+		<Unit filename="Render.hpp" />
 		<Unit filename="Util.cpp" />
+		<Unit filename="Util.hpp" />
 		<Unit filename="depend/EasyBMP/EasyBMP.cpp" />
 		<Unit filename="main.cpp" />
 		<Unit filename="workOrder.cpp" />
+		<Unit filename="workOrder.hpp" />
 		<Unit filename="workerThread.cpp" />
+		<Unit filename="workerThread.hpp" />
 		<Extensions>
 			<code_completion />
 			<envvars />

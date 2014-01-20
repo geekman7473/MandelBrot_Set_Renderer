@@ -21,6 +21,7 @@ workerThread::workerThread(){
 void threadWorker(void * arg){
     workerThread* wT = (workerThread *) arg;
 
+    cout << "test";
     vector<workOrder_t> workList;
 
     sf::TcpSocket socket;
