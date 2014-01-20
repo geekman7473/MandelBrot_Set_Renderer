@@ -2,10 +2,10 @@
 #define WORKERTHREAD
 
 #include <string>
-#include "Util.cpp"
-#include "workOrder.cpp"
-#include "PacketOps.cpp"
-#include "Render.cpp"
+#include "Util.hpp"
+#include "workOrder.hpp"
+#include "PacketOps.hpp"
+#include "Render.hpp"
 
 using namespace std;
 

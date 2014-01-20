@@ -19,11 +19,11 @@
 using namespace std;
 using namespace tthread;
 
-#include "Util.cpp"
-#include "workOrder.cpp"
-#include "workerThread.cpp"
-#include "PacketOps.cpp"
-#include "Render.cpp"
+#include "Util.hpp"
+#include "workOrder.hpp"
+#include "workerThread.hpp"
+#include "PacketOps.hpp"
+#include "Render.hpp"
 
 //Type for use with TTMATH library. This is slower but seems to be more C++ compliant
 typedef ttmath::Big<TTMATH_BITS(32), TTMATH_BITS(1024)> LLDo;
