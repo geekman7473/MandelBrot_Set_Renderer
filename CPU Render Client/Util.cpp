@@ -1,15 +1,18 @@
-#ifndef UTIL
-#define UTIL
+#ifndef UTIL_c
+#define UTIL_c
 
-string intToString(long long int val){
-    stringstream ss;
+#include "Util.hpp"
+#include <string>
+#include <sstream>
+
+std::string intToString(long long int val){
+    std::stringstream ss;
     ss << val;
     return  ss.str();
 }
-string doubleToString(long double val){
-    stringstream ss;
+std::string doubleToString(long double val){
+    std::stringstream ss;
     ss << val;
     return  ss.str();
 }
-
-#endif // UTIL
+#endif

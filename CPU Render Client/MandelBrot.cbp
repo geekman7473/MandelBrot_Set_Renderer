@@ -43,8 +43,13 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="PacketOps.cpp" />
+		<Unit filename="Render.cpp" />
+		<Unit filename="Util.cpp" />
 		<Unit filename="depend/EasyBMP/EasyBMP.cpp" />
 		<Unit filename="main.cpp" />
+		<Unit filename="workOrder.cpp" />
+		<Unit filename="workerThread.cpp" />
 		<Extensions>
 			<code_completion />
 			<envvars />
