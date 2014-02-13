@@ -28,9 +28,11 @@ using namespace tthread;
 //Type for use with TTMATH library. This is slower but seems to be more C++ compliant
 typedef ttmath::Big<TTMATH_BITS(32), TTMATH_BITS(1024)> LLDo;
 
+void pause() __attribute__((destructor));
+
 int main(){
 
-    cout << "Enter server IP: ";
+    cout << "Enter server IP:  ";
     string tempIP;
     cin >> tempIP;
     int MAXTHREADS = 0;
@@ -56,7 +58,12 @@ int main(){
         t->join();
         delete t;
     }
-
-    cin.get();
+    cout << "All threads terminated. Press any key to continue...";
+    pause();
     return 0;
+}
+
+void pause(){
+   std::cin.sync();
+   std::cin.ignore();
 }

@@ -67,8 +67,9 @@ RGBApixel mandelPixel(workOrder_t *w, unsigned long long int x, unsigned long lo
 }
 
 int MandelRender(workOrder_t *w){
-
+    cout << w-> FrameHeight << endl;
     w->timeWorkStarted = time(NULL);
+    cout << time(NULL) << " " << w->timeWorkStarted;
 
     switch(w->workType){
         case -1:
@@ -79,7 +80,6 @@ int MandelRender(workOrder_t *w){
             break;
         case 1:
             w->completedWork.SetSize(w->FrameWidth, w->FrameHeight);
-
             //iterate through pixels in frame where x = i and j = y
             for(unsigned long long int i = 0; i < w->FrameWidth; i++){
                 for(unsigned long long int j = 0; j < w->FrameHeight; j++){

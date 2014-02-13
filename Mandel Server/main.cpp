@@ -6,6 +6,8 @@
 #include <cstdlib>
 #include <string>
 #include <sstream>
+#include "depend/easyBMP/EasyBMP.h"
+#include "depend/easyBMP/EasyBMP.cpp"
 #include <SFML/Network.hpp>
 #include <windows.h>
 #include <process.h>
@@ -14,25 +16,54 @@ using namespace std;
 
 #define MAX_CLIENTS 100
 
+sf::Packet& operator>> (sf::Packet& packet,  BMP& m){
+    int tempX, tempY; packet >> tempY; packet >> tempX;
+    cout <<"tempX: " << tempX << " tempY: " << tempY << endl;
+    cin.sync();
+    cin.get();
+    m.SetSize(tempX, tempY);
+    for(long i = 0; i < tempX; i++){
+        for(long j = 0; j < tempY; j++){
+                sf::Int16 red, green, blue, alpha; packet >> red; packet >> green; packet >> blue; packet >> alpha;
+                RGBApixel tempPx; tempPx.Red = (int)red; tempPx.Green = (int)green; tempPx.Blue = (int)blue; tempPx.Alpha = (int)alpha;
+                m.SetPixel(i, j, tempPx);
+        }
+    }
+}
+
 void manageConnection(sf::TcpSocket *client){
+    cout << endl << client ->getRemoteAddress() << ":" << client ->getRemotePort()  << "Connected" << endl;
     while(true){
         sf::Packet message;
         if (client ->receive(message) != sf::Socket::Done){
             cerr << "Failed to receive...";
             return;
         }
-        //std::cout << "Received " << received << " bytes" << std::endl;
-        //for (int i =0; i < 100; i++){
-        //    cout << data[i];
-        //}
-        string test1;
-        message >> test1;
-        /*for(int i = 0; i< test1.size(); i++){
-            if(test1[i] == '_'){
-                test1[i] = ' ';
+        string messageType;
+        message >> messageType;
+        cout << endl << client ->getRemoteAddress() << ":" << client ->getRemotePort()  << endl << messageType;
+        if(messageType == "1"){
+            message.clear();
+            message << (sf::Uint16)1;
+            message << "0";
+            message << "0";
+            message << (sf::Uint32)1920;
+            message << (sf::Uint32)1080;
+            message << "1";
+            message << (sf::Uint32)10;
+            message << "0";
+            message << false;
+            if(client ->send(message) != sf::Socket::Done){
+                cerr << "Failed to send..." << endl;
+                return;
             }
-        }*/
-        cout << endl << client ->getRemoteAddress() << ":" << client ->getRemotePort()  << endl << test1;
+        } else if(messageType == "2"){
+            cout << "Receiving work from" << client ->getRemoteAddress() << ":" << client ->getRemotePort() << "..." << endl;
+            BMP receiveWork;
+            message >> receiveWork;
+            receiveWork.WriteToFile("workReception.bmp");
+            cout << "Work flushed to file!" << endl;
+        }
     }
 }
 

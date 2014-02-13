@@ -16,7 +16,7 @@ class workOrder_t {
         //3 = pixel
         //0 = Null Work, when encountered these work allocations should be ignored
         // -1 = Error, when encountered these work allocations should be ignored
-        sf::Int8 workType;
+        sf::Int16 workType;
         //This string represents the coordinates of the center point of the current frame
         //for pixel and scan line renders, the work assigned will be determined by the full
         //frame determined by these coordinates, as well as dimensions and zoomFactor
@@ -26,9 +26,9 @@ class workOrder_t {
         //this value determines the zoomFactor for the frame of reference upon which the work is to be based
         std::string zoomFactor;
         //Determines the maximum iterations for the work
-        sf::Uint64 maximumIterations;
+        sf::Uint32 maximumIterations;
 
-		// Work Identification Number - number assigned to work orders in order to uniquely identify them
+		// Work Identification Number - number assigned to work orders by management server in order to uniquely identify them
 		std::string WIN;
 
         //For type 2 work orders only: specifies whether renders are horizontal or vertical lines from the "frame of reference"

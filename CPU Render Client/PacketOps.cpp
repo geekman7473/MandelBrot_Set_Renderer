@@ -10,7 +10,7 @@ sf::Packet& operator<< (sf::Packet& packet,  BMP& m){
     packet << m.TellHeight() << m.TellWidth();
     for(long i = 0; i < m.TellWidth(); i++){
         for(long j = 0; j < m.TellHeight(); j++){
-                packet << m.GetPixel(i, j).Red << m.GetPixel(i, j).Green << m.GetPixel(i, j).Blue << m.GetPixel(i, j).Alpha ;
+                packet << (sf::Int16) m.GetPixel(i, j).Red << (sf::Int16) m.GetPixel(i, j).Green << (sf::Int16) m.GetPixel(i, j).Blue << (sf::Int16) m.GetPixel(i, j).Alpha;
         }
     }
 }
