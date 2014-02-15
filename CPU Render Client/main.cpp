@@ -50,6 +50,7 @@ int main(){
         workers[i].totalRenderTime =0;
         workers[i].workProgress = "";
         workers[i].serverIp = tempIP;
+        workers[i].maxRetries = 5;
         threadList.push_back(new thread(threadWorker, (void *)&workers[i]));
     }
 

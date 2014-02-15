@@ -68,6 +68,11 @@ void manageConnection(sf::TcpSocket *client){
 }
 
 int main(){
+    sf::Uint64 test = 10046744073709551614;
+    sf::Uint32 a = (test >> 32), b = (sf::Uint32)test;
+    cout << (sf::Uint32)test << endl << (test >> 32) << endl;
+    cout << ((sf::Uint64)a << 32) + b;
+
     sf::TcpListener listener;
 
     // bind the listener to a port
