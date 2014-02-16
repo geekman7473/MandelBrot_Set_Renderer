@@ -31,116 +31,98 @@ void threadWorker(void * arg){
     sf::TcpSocket socket;
 
     while(true){
-        bool initFail = false;
-        int failCount = 0;
-
         sf::Socket::Status status = socket.connect(wT -> serverIp, 60606);
 
         while (status != sf::Socket::Done){ //connecting to server
             cerr << "Socket failed to initialize with remote host. Retrying..." << endl;
             sf::Socket::Status status = socket.connect(wT -> serverIp, 60606);
-            failCount++;
-            if(failCount == wT -> maxRetries){
-                return;
-            }
         }
-        failCount = 0;
 
         while(socket.receive(inPacket) != sf::Socket::Done){ //receive project details
             cerr << "Failed to receive project details from CMS. Retrying..." << endl;
-            failCount++;
-            if(failCount == wT -> maxRetries){
-                return;
-            }
         }
-        failCount = 0;
 
-        inPacket >> projectDetails[1];
-        if(projectDetails[1] == projectDetails[0]){       //if the project details from server
-            outPacket << 2 << (sf::Int32)workList.size(); //match those on file then send all work in worklist to server
+        outPacket.clear();
+        outPacket << "1"; //designates message as a client details message
+        outPacket << wT -> workerID << wT -> threadID;
+        while (socket.send(outPacket) != sf::Socket::Done) {
+            cerr << "Failed to send client specifications. Retrying..." << endl;
+        }
+
+        string messageType;
+        inPacket >> messageType >> projectDetails[1];
+        if(projectDetails[1] == projectDetails[0]){       //if the project details from server match those on file then send all work in worklist to server
+            outPacket.clear();
+            outPacket << "2";
+            outPacket << (sf::Int32)workList.size(); //the "2" designates the message type
+            cout << "test1";
             for(int i = 0; i < workList.size(); i++){
-                outPacket << workList[i].WIN << workList[i].completedWork << (sf::Uint32)(workList[i].totalIterationsUsed >> 32) << (sf::Uint32)(workList[i].totalIterationsUsed) << (sf::Uint32)(workList[i].timeWorkFinshed - workList[i].timeWorkStarted);
+                outPacket << workList[i].WIN;
+                outPacket << workList[i].completedWork;
+                outPacket << (sf::Uint32)(workList[i].totalIterationsUsed >> 32);
+                outPacket << (sf::Uint32)(workList[i].totalIterationsUsed);
+                outPacket << (sf::Uint32)(workList[i].timeWorkFinsished - workList[i].timeWorkStarted);
+                //the server only needs certain data back from the client
+                //namely the time required to complete a render, the WIN, iterations used, and the image itself
             }
+            cout << "test4";
             workList.clear();
+            cout << "test5";
+            while(socket.send(outPacket) != sf::Socket::Done){
+                cerr << "Failed to upload completed renders to CMS. Retrying..." << endl;
+            }
         } else {
-            workList.clear();
+            workList.clear(); //if project details do not match then discard all previous work
+            projectDetails[0] = projectDetails[1]; //sets the current project ([0]) to what the server sent
+            projectDetails[1] = ""; //reset temp project ID
         }
 
 
-
-        sf::Packet workReq;
-        workReq << "1"; //thread specs should go here
-        while (socket.send(workReq) != sf::Socket::Done) {
-            cerr << "Failed to send work request. Retrying..." << endl;
-            failCount++;
-            if(failCount == wT -> maxRetries){
-                return;
-            }
+        outPacket.clear();
+        outPacket << "3"; //work request
+        //work request paramaters
+        //sf::Uint16 number_of_work_orders (keep this reasonable, value above 16k may behave... unexpectedly)
+        //sf::int16 work_type_request (current server software only supports distribution of type 1)
+        //these parameters are to be expanded upon and dynamically defined in later versions
+        outPacket << 10 << 1;
+        while(socket.send(outPacket) != sf::Socket::Done){
+            cerr << "Failed to request work. Retrying..." << endl;
         }
-        failCount = 0;
 
-        sf::Packet workReception;
-        while (socket.receive(workReception) != sf::Socket::Done) {
+        inPacket.clear();
+        while (socket.receive(inPacket) != sf::Socket::Done) {
             cerr << "Failed to receive work allocation. Retrying..." << endl;
-            failCount++;
-            if(failCount == wT -> maxRetries){
-                return;
-            }
         }
-        failCount = 0;
 
-        sf::Int16 workType;
-        sf::Uint32 FrameWidth, FrameHeight, maximumIterations, lineNum, pixelX, pixelY;
-        sf::Uint64 timeReceived;
-        std::string WIN, xCord, yCord, zoomFactor;
-        bool isHor;
-        workReception >> workType;
-        workReception >> xCord;
-        workReception >> yCord;
-        workReception >> FrameWidth;
-        workReception >> FrameHeight;
-        workReception >> zoomFactor;
-        workReception >> maximumIterations;
-        workReception >> WIN;
-        workReception >> isHor;
 
-        cout << endl << "worktype: " << workType;
-        cout << endl << "xCord: " << xCord;
-        cout << endl << "yCord: " << yCord;
-        cout << endl << "frameWidth: " << FrameWidth;
-        cout << endl << "frameHeight: " << FrameHeight << endl;
-        workOrder_t temp;
-        temp.workType = workType;
-        temp.xCord = xCord;
-        temp.yCord = yCord;
-        temp.FrameHeight = FrameHeight;
-        temp.FrameWidth = FrameWidth;
-        temp.zoomFactor = zoomFactor;
-        temp.maximumIterations = maximumIterations;
-        temp.WIN = WIN;
-        temp.isHorizontal = isHor;
+        inPacket >> messageType;
+        //the second value in the work allocation should specify the quantity of workorder objects sent
+        //a value of 0 indicates... something...
+        //a value of -1 indicates an error
+        //a value of -2 indicates the completion of the project
+        sf::Int32 workQuant;
+        inPacket >> workQuant;
 
-        cout << endl << "Tworktype: " << temp.workType;
-        cout << endl << "TxCord: " << temp.xCord;
-        cout << endl << "TyCord: " << temp.yCord;
-        cout << endl << "TframeWidth: " << temp.FrameWidth;
-        cout << endl << "TframeHeight: " << temp.FrameHeight << endl;
-
-        MandelRender(&temp);
-
-        workReception.clear();
-        workReception << "2" << temp.completedWork;
-        cout << endl << "Sending completed render!" << endl;
-        while (socket.send(workReception) != sf::Socket::Done) {
-            cerr << "Failed to send finished work. Retrying..." << endl;
-            failCount++;
-            if(failCount == wT -> maxRetries){
-                return;
-            }
+        if(workQuant < 0){
+            cerr << "The server failed to send a work allocation." << endl;
+            return;
         }
-        failCount = 0;
-
-        temp.completedWork.WriteToFile(("test" + intToString(time(NULL)) + ".bmp").c_str());
+        socket.disconnect(); //disconnect until a connection is needed on next loop iteration
+        for(sf::Int32 i = 0; i < workQuant; i++){ //populates worklist
+            workOrder_t temp;
+            inPacket >> temp;
+            cout << endl << "Tworktype: " << temp.workType;
+            cout << endl << "TxCord: " << temp.xCord;
+            cout << endl << "TyCord: " << temp.yCord;
+            cout << endl << "TframeWidth: " << temp.FrameWidth;
+            cout << endl << "TframeHeight: " << temp.FrameHeight << endl;
+            workList.push_back(temp);
+        }
+        for(int i = 0; i < workList.size(); i++){
+            MandelRender(&workList[i]);
+            workList[i].completedWork.WriteToFile(("test" + intToString(time(NULL)) + "_" + intToString(rand())+ ".bmp").c_str());
+            cout << "Finished render " << i << endl;
+        }
     }
 }
 #endif

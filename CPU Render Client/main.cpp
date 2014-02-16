@@ -31,6 +31,7 @@ typedef ttmath::Big<TTMATH_BITS(32), TTMATH_BITS(1024)> LLDo;
 void pause() __attribute__((destructor));
 
 int main(){
+    srand(NULL);
 
     cout << "Enter server IP:  ";
     string tempIP;
@@ -46,11 +47,12 @@ int main(){
 
     for(int i = 0; i < MAXTHREADS; i++){
         workers[i].maxThreads = MAXTHREADS;
-        workers[i].threadID = i;
+        workers[i].threadID = i + 7; //+7 is for debug purposes
         workers[i].totalRenderTime =0;
         workers[i].workProgress = "";
         workers[i].serverIp = tempIP;
-        workers[i].maxRetries = 5;
+        //workers[i].maxRetries = 5;
+        workers[i].workerID = "ISAAC";
         threadList.push_back(new thread(threadWorker, (void *)&workers[i]));
     }
 

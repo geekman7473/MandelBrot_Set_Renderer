@@ -1,14 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Debug" />
-	<File name="Render.hpp" open="1" top="0" tabpos="9" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="14" topLine="0" />
-		</Cursor>
-	</File>
 	<File name="Util.cpp" open="1" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="49" topLine="0" />
+			<Cursor1 position="166" topLine="0" />
 		</Cursor>
 	</File>
 	<File name="Util.hpp" open="1" top="0" tabpos="10" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -21,10 +16,10 @@
 			<Cursor1 position="45822" topLine="1764" />
 		</Cursor>
 	</File>
-	<File name="main.cpp" open="1" top="0" tabpos="1" split="2" active="1" splitpos="897" zoom_1="-1" zoom_2="0">
+	<File name="main.cpp" open="1" top="0" tabpos="1" split="2" active="1" splitpos="313" zoom_1="-1" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="1206" topLine="6" />
-			<Cursor2 position="1829" topLine="9" />
+			<Cursor1 position="927" topLine="0" />
+			<Cursor2 position="1920" topLine="9" />
 		</Cursor>
 	</File>
 	<File name="workOrder.cpp" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
@@ -34,22 +29,22 @@
 	</File>
 	<File name="workOrder.hpp" open="1" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="2425" topLine="16" />
+			<Cursor1 position="2171" topLine="18" />
 		</Cursor>
 	</File>
 	<File name="workerThread.cpp" open="1" top="1" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="2407" topLine="30" />
+			<Cursor1 position="2462" topLine="34" />
 		</Cursor>
 	</File>
 	<File name="workerThread.hpp" open="1" top="0" tabpos="8" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="775" topLine="0" />
+			<Cursor1 position="463" topLine="0" />
 		</Cursor>
 	</File>
 	<File name="PacketOps.cpp" open="1" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="218" topLine="0" />
+			<Cursor1 position="793" topLine="0" />
 		</Cursor>
 	</File>
 	<File name="PacketOps.hpp" open="1" top="0" tabpos="11" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -60,6 +55,11 @@
 	<File name="Render.cpp" open="1" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="2392" topLine="68" />
+		</Cursor>
+	</File>
+	<File name="Render.hpp" open="1" top="0" tabpos="9" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="14" topLine="0" />
 		</Cursor>
 	</File>
 </CodeBlocks_layout_file>

@@ -19,10 +19,10 @@ class workerThread {
     unsigned int threadID;
     //string which main function can read in order to display overall node status
     std::string workProgress;
+    //a user defined string to track a nodes contribution to the project
+    std::string workerID;
     //totaltime spent rendering in seconds
     unsigned long long int totalRenderTime;
-    //max number of retries before declaring a failure and begging the handshake again
-    int maxRetries;
 
     //for debug in server-less test scenarios
     workOrder_t testWork;
