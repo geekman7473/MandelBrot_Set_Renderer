@@ -25,7 +25,7 @@ std::string intToString(long long int val){
 }
 
 sf::Packet& operator>> (sf::Packet& packet,  BMP& m){
-    int tempX, tempY; packet >> tempY; packet >> tempX;
+    sf::Int32 tempX, tempY; packet >> tempY; packet >> tempX;
     cout << endl <<"tempX: " << tempX << " tempY: " << tempY << endl;
     m.SetSize(tempX, tempY);
     for(long i = 0; i < tempX; i++){
@@ -66,8 +66,8 @@ void manageConnection(sf::TcpSocket *client){
             message << (sf::Uint16)1;
             message << "0";
             message << "0";
-            message << (sf::Uint32)1920;
-            message << (sf::Uint32)1080;
+            message << (sf::Uint32)3000;
+            message << (sf::Uint32)2000;
             message << "1";
             message << (sf::Uint32)10;
             message << "0";
@@ -80,18 +80,23 @@ void manageConnection(sf::TcpSocket *client){
             }
         } else if(messageType == "2"){
             cout << "Receiving work from" << client ->getRemoteAddress() << ":" << client ->getRemotePort() << "..." << endl;
+            sf::Int32 workNum;
+            message >> workNum;
             BMP receiveWork;
-            string WIN;
-            sf::Uint64 totalIters;
-            sf::Uint32 tempA, tempB, workTime;
-            message >> WIN; //these are all of those values that you should probably do something with
-            message >> receiveWork;
-            message >> tempA;
-            message >> tempB;
-            totalIters = (tempA * 4294967296) + tempB;
-            message >> workTime;
-            receiveWork.WriteToFile("workReception.bmp");
-            cout << "Work flushed to file!" << endl;
+            for(int i = 0; i < workNum; i++){
+                string WIN;
+                sf::Uint64 totalIters;
+                sf::Uint32 tempA, tempB, workTime;
+                message >> WIN; //these are all of those values that you should probably do something with
+                message >> receiveWork;
+                message >> tempA;
+                message >> tempB;
+                totalIters = (tempA * 4294967296) + tempB;
+                message >> workTime;
+                cout << "Total Iters: " << totalIters;
+                receiveWork.WriteToFile("workReception.bmp");
+                cout << "Work flushed to file!" << endl;
+            }
         } else if (messageType == "1"){
             string remoteWorkerID;
             sf::Int32 remoteThreadID;

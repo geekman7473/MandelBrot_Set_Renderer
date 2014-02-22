@@ -53,8 +53,8 @@ void threadWorker(void * arg){
         inPacket >> messageType >> projectDetails[1];
         if(projectDetails[1] == projectDetails[0]){       //if the project details from server match those on file then send all work in worklist to server
             outPacket.clear();
-            outPacket << "2";
-            outPacket << (sf::Int32)workList.size(); //the "2" designates the message type
+            outPacket << "2"; //the "2" designates the message type
+            outPacket << (sf::Int32)workList.size();
             cout << "test1";
             for(int i = 0; i < workList.size(); i++){
                 outPacket << workList[i].WIN;
