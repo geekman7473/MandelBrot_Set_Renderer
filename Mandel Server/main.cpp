@@ -14,15 +14,14 @@
 
 using namespace std;
 
-#define MAX_CLIENTS 100
+#define MAX_CLIENTS 1000
+
+#include "Util.hpp"
+#include "workOrder.hpp"
 
 unsigned long long projCreationTime;
 
-std::string intToString(long long int val){
-    std::stringstream ss;
-    ss << val;
-    return  ss.str();
-}
+vector<workOrder_t> unAsWorkList;
 
 sf::Packet& operator>> (sf::Packet& packet,  BMP& m){
     sf::Int32 tempX, tempY; packet >> tempY; packet >> tempX;
@@ -59,26 +58,12 @@ void manageConnection(sf::TcpSocket *client){
         string messageType;
         message >> messageType;
         cout << endl << client ->getRemoteAddress() << ":" << client ->getRemotePort() << " mess: " << messageType;
-        if(messageType == "3"){
-            message.clear();
-            message << "5";
-            message << 1;
-            message << (sf::Uint16)1;
-            message << "0";
-            message << "0";
-            message << (sf::Uint32)3000;
-            message << (sf::Uint32)2000;
-            message << "1";
-            message << (sf::Uint32)10;
-            message << "0";
-            message << false;
-            message << 0;
-            message << 0;
-            if(client ->send(message) != sf::Socket::Done){
-                cerr << "Failed to send..." << endl;
-                return;
-            }
-        } else if(messageType == "2"){
+        if(messageType== "1"){ //client details sent
+            string remoteWorkerID;
+            sf::Int32 remoteThreadID;
+            message >> remoteWorkerID >> remoteThreadID;
+            cout << " " << client ->getRemoteAddress() << ":" << client ->getRemotePort() << " = " << remoteWorkerID <<":" << remoteThreadID;
+        }else if (messageType == "2"){//completed work reception
             cout << "Receiving work from" << client ->getRemoteAddress() << ":" << client ->getRemotePort() << "..." << endl;
             sf::Int32 workNum;
             message >> workNum;
@@ -97,17 +82,46 @@ void manageConnection(sf::TcpSocket *client){
                 receiveWork.WriteToFile("workReception.bmp");
                 cout << "Work flushed to file!" << endl;
             }
-        } else if (messageType == "1"){
-            string remoteWorkerID;
-            sf::Int32 remoteThreadID;
-            message >> remoteWorkerID >> remoteThreadID;
-            cout << " " << client ->getRemoteAddress() << ":" << client ->getRemotePort() << " = " << remoteWorkerID <<":" << remoteThreadID;
+        }else if (messageType ==  "3"){//request for work
+            message.clear();
+            message << "5";
+            message << 1;
+            message << (sf::Uint16)1;
+            message << "0";
+            message << "0";
+            message << (sf::Uint32)1000;
+            message << (sf::Uint32)1000;
+            message << "1";
+            message << (sf::Uint32)100;
+            message << "0";
+            message << false;
+            message << 0;
+            message << 0;
+            if(client ->send(message) != sf::Socket::Done){
+                cerr << "Failed to send..." << endl;
+                return;
+            }
         }
     }
 }
 
 int main(){
 
+    //The following is a placeholder
+    //This code will initialize the project
+    //with an array list of renders designed to render a large scale "panoramic" style image
+  /*  int projHeight, projWidth, vertChunks, horChunks;
+
+    cout << "Enter the height and width of the desired output image separated by a space: ";
+    cin >> projHeight >> projWidth;
+    cout << endl << "Enter the number of vertical and horizontal chunks separated by a space: ";
+    cin >> vertChunks >> horChunks;
+
+    for(int i = 0; i < (projHeight * projWidth)/ (vertChunks * horChunks); i++){
+        workOrder_t temp;
+        temp.
+        workList.push_back()
+    } */
     sf::TcpListener listener;
 
     // bind the listener to a port

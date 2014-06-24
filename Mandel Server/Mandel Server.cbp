@@ -38,7 +38,11 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="Util.cpp" />
+		<Unit filename="Util.hpp" />
 		<Unit filename="main.cpp" />
+		<Unit filename="workOrder.cpp" />
+		<Unit filename="workOrder.hpp" />
 		<Extensions>
 			<code_completion />
 			<envvars />
