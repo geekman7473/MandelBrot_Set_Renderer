@@ -13,10 +13,10 @@ RGBApixel mandelPixel(workOrder_t *w, unsigned long long int x, unsigned long lo
 
     //these values are used in replacement of constants during view scaling
     mpf_class a, b, c, d;
-    a = "3.5";
-    b = "2.5";
+    a = "2.0";
+    b = "2.0";
     c = "2.0";
-    d = "1";
+    d = "2.0";
     RGBApixel output;
     //Variable Declaration, values to be determined in loop
     mpf_class x0, y0, xtemp, mpfX, mpfY, i, j, _x, _y;

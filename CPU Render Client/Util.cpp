@@ -15,4 +15,5 @@ std::string doubleToString(long double val){
     ss << val;
     return  ss.str();
 }
+
 #endif

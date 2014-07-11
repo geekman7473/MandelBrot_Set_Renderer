@@ -51,6 +51,7 @@ void threadWorker(void * arg){
 
         string messageType;
         inPacket >> messageType >> projectDetails[1];
+        cout << endl <<projectDetails[0] << " new proj " << projectDetails[1] << endl;
         if(projectDetails[1] == projectDetails[0]){       //if the project details from server match those on file then send all work in worklist to server
             outPacket.clear();
             outPacket << "2"; //the "2" designates the message type

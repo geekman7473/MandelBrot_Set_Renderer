@@ -898,3 +898,367 @@
 	"workerThread.hpp"
 	"PacketOps.hpp"
 
+1402952964 source:c:\users\justin_becker\documents\github\mandelbrot_set_renderer\cpu render client\depend\easybmp\easybmp.cpp
+	"EasyBMP.h"
+
+1402952964 c:\users\justin_becker\documents\github\mandelbrot_set_renderer\cpu render client\depend\easybmp\easybmp.h
+	<iostream>
+	<cmath>
+	<cctype>
+	<cstring>
+	<stdio.h>
+	<cstdio>
+	"EasyBMP_DataStructures.h"
+	"EasyBMP_BMP.h"
+	"EasyBMP_VariousBMPutilities.h"
+
+1402952964 c:\users\justin_becker\documents\github\mandelbrot_set_renderer\cpu render client\depend\easybmp\easybmp_datastructures.h
+
+1402952964 c:\users\justin_becker\documents\github\mandelbrot_set_renderer\cpu render client\depend\easybmp\easybmp_bmp.h
+
+1402952964 c:\users\justin_becker\documents\github\mandelbrot_set_renderer\cpu render client\depend\easybmp\easybmp_variousbmputilities.h
+
+1405099046 source:c:\users\justin_becker\documents\github\mandelbrot_set_renderer\cpu render client\main.cpp
+	<iostream>
+	<stdio.h>
+	"depend\EasyBMP\EasyBMP.h"
+	<stdio.h>
+	<time.h>
+	<assert.h>
+	<cstdlib>
+	<string>
+	<sstream>
+	"depend\ttmath\ttmath\ttmath.h"
+	<SFML/System.hpp>
+	<SFML/Network.hpp>
+	"depend\TinyThread++\tinythread.h"
+	"depend\TinyThread++\tinythread.cpp"
+	"gmpxx.h"
+	"Util.hpp"
+	"workOrder.hpp"
+	"workerThread.hpp"
+	"PacketOps.hpp"
+	"Render.hpp"
+
+1402952964 c:\users\justin_becker\documents\github\mandelbrot_set_renderer\cpu render client\depend\ttmath\ttmath\ttmath.h
+	"ttmathbig.h"
+	"ttmathobjects.h"
+	"ttmathparser.h"
+
+1402952964 c:\users\justin_becker\documents\github\mandelbrot_set_renderer\cpu render client\depend\ttmath\ttmath\ttmathbig.h
+	"ttmathint.h"
+	"ttmaththreads.h"
+	<iostream>
+	<signal.h>
+
+1402952964 c:\users\justin_becker\documents\github\mandelbrot_set_renderer\cpu render client\depend\ttmath\ttmath\ttmathint.h
+	"ttmathuint.h"
+
+1402952964 c:\users\justin_becker\documents\github\mandelbrot_set_renderer\cpu render client\depend\ttmath\ttmath\ttmathuint.h
+	<iostream>
+	<iomanip>
+	"ttmathtypes.h"
+	"ttmathmisc.h"
+	"ttmathuint_x86.h"
+	"ttmathuint_x86_64.h"
+	"ttmathuint_noasm.h"
+
+1402952964 c:\users\justin_becker\documents\github\mandelbrot_set_renderer\cpu render client\depend\ttmath\ttmath\ttmathtypes.h
+	<stdexcept>
+	<sstream>
+	<vector>
+	<stdint.h>
+
+1402952964 c:\users\justin_becker\documents\github\mandelbrot_set_renderer\cpu render client\depend\ttmath\ttmath\ttmathmisc.h
+	<string>
+
+1402952964 c:\users\justin_becker\documents\github\mandelbrot_set_renderer\cpu render client\depend\ttmath\ttmath\ttmathuint_x86.h
+
+1402952964 c:\users\justin_becker\documents\github\mandelbrot_set_renderer\cpu render client\depend\ttmath\ttmath\ttmathuint_x86_64.h
+	<intrin.h>
+
+1402952964 c:\users\justin_becker\documents\github\mandelbrot_set_renderer\cpu render client\depend\ttmath\ttmath\ttmathuint_noasm.h
+
+1402952964 c:\users\justin_becker\documents\github\mandelbrot_set_renderer\cpu render client\depend\ttmath\ttmath\ttmaththreads.h
+	"ttmathtypes.h"
+	<windows.h>
+	<cstdio>
+	<pthread.h>
+	<ttmath/ttmath.h>
+
+1402952964 c:\users\justin_becker\documents\github\mandelbrot_set_renderer\cpu render client\depend\ttmath\ttmath\ttmathobjects.h
+	<string>
+	<vector>
+	<list>
+	<map>
+	"ttmathtypes.h"
+	"ttmathmisc.h"
+
+1402952964 c:\users\justin_becker\documents\github\mandelbrot_set_renderer\cpu render client\depend\ttmath\ttmath\ttmathparser.h
+	<cstdio>
+	<vector>
+	<map>
+	<set>
+	"ttmath.h"
+	"ttmathobjects.h"
+	"ttmathmisc.h"
+
+1402952964 c:\users\justin_becker\documents\github\mandelbrot_set_renderer\cpu render client\depend\sfml-2.1\include\sfml\system.hpp
+	<SFML/Config.hpp>
+	<SFML/System/Clock.hpp>
+	<SFML/System/Err.hpp>
+	<SFML/System/InputStream.hpp>
+	<SFML/System/Lock.hpp>
+	<SFML/System/Mutex.hpp>
+	<SFML/System/Sleep.hpp>
+	<SFML/System/String.hpp>
+	<SFML/System/Thread.hpp>
+	<SFML/System/ThreadLocal.hpp>
+	<SFML/System/ThreadLocalPtr.hpp>
+	<SFML/System/Utf.hpp>
+	<SFML/System/Vector2.hpp>
+	<SFML/System/Vector3.hpp>
+
+1402952964 c:\users\justin_becker\documents\github\mandelbrot_set_renderer\cpu render client\depend\sfml-2.1\include\sfml\config.hpp
+
+1402952964 c:\users\justin_becker\documents\github\mandelbrot_set_renderer\cpu render client\depend\sfml-2.1\include\sfml\system\clock.hpp
+	<SFML/System/Export.hpp>
+	<SFML/System/Time.hpp>
+
+1402952964 c:\users\justin_becker\documents\github\mandelbrot_set_renderer\cpu render client\depend\sfml-2.1\include\sfml\system\export.hpp
+	<SFML/Config.hpp>
+
+1402952964 c:\users\justin_becker\documents\github\mandelbrot_set_renderer\cpu render client\depend\sfml-2.1\include\sfml\system\time.hpp
+	<SFML/System/Export.hpp>
+
+1402952964 c:\users\justin_becker\documents\github\mandelbrot_set_renderer\cpu render client\depend\sfml-2.1\include\sfml\system\err.hpp
+	<SFML/System/Export.hpp>
+	<ostream>
+
+1402952964 c:\users\justin_becker\documents\github\mandelbrot_set_renderer\cpu render client\depend\sfml-2.1\include\sfml\system\inputstream.hpp
+	<SFML/Config.hpp>
+
+1402952964 c:\users\justin_becker\documents\github\mandelbrot_set_renderer\cpu render client\depend\sfml-2.1\include\sfml\system\lock.hpp
+	<SFML/System/Export.hpp>
+	<SFML/System/NonCopyable.hpp>
+
+1402952964 c:\users\justin_becker\documents\github\mandelbrot_set_renderer\cpu render client\depend\sfml-2.1\include\sfml\system\noncopyable.hpp
+	<SFML/System/Export.hpp>
+
+1402952964 c:\users\justin_becker\documents\github\mandelbrot_set_renderer\cpu render client\depend\sfml-2.1\include\sfml\system\mutex.hpp
+	<SFML/System/Export.hpp>
+	<SFML/System/NonCopyable.hpp>
+
+1402952964 c:\users\justin_becker\documents\github\mandelbrot_set_renderer\cpu render client\depend\sfml-2.1\include\sfml\system\sleep.hpp
+	<SFML/System/Export.hpp>
+	<SFML/System/Time.hpp>
+
+1402952964 c:\users\justin_becker\documents\github\mandelbrot_set_renderer\cpu render client\depend\sfml-2.1\include\sfml\system\string.hpp
+	<SFML/System/Export.hpp>
+	<locale>
+	<string>
+
+1402952964 c:\users\justin_becker\documents\github\mandelbrot_set_renderer\cpu render client\depend\sfml-2.1\include\sfml\system\thread.hpp
+	<SFML/System/Export.hpp>
+	<SFML/System/NonCopyable.hpp>
+	<cstdlib>
+	<SFML/System/Thread.inl>
+
+1402952964 c:\users\justin_becker\documents\github\mandelbrot_set_renderer\cpu render client\depend\sfml-2.1\include\sfml\system\thread.inl
+
+1402952964 c:\users\justin_becker\documents\github\mandelbrot_set_renderer\cpu render client\depend\sfml-2.1\include\sfml\system\threadlocal.hpp
+	<SFML/System/Export.hpp>
+	<SFML/System/NonCopyable.hpp>
+	<cstdlib>
+
+1402952964 c:\users\justin_becker\documents\github\mandelbrot_set_renderer\cpu render client\depend\sfml-2.1\include\sfml\system\threadlocalptr.hpp
+	<SFML/System/ThreadLocal.hpp>
+	<SFML/System/ThreadLocalPtr.inl>
+
+1402952964 c:\users\justin_becker\documents\github\mandelbrot_set_renderer\cpu render client\depend\sfml-2.1\include\sfml\system\threadlocalptr.inl
+
+1402952964 c:\users\justin_becker\documents\github\mandelbrot_set_renderer\cpu render client\depend\sfml-2.1\include\sfml\system\utf.hpp
+	<SFML/Config.hpp>
+	<algorithm>
+	<locale>
+	<string>
+	<cstdlib>
+	<SFML/System/Utf.inl>
+
+1402952964 c:\users\justin_becker\documents\github\mandelbrot_set_renderer\cpu render client\depend\sfml-2.1\include\sfml\system\utf.inl
+
+1402952964 c:\users\justin_becker\documents\github\mandelbrot_set_renderer\cpu render client\depend\sfml-2.1\include\sfml\system\vector2.hpp
+	<SFML/System/Vector2.inl>
+
+1402952964 c:\users\justin_becker\documents\github\mandelbrot_set_renderer\cpu render client\depend\sfml-2.1\include\sfml\system\vector2.inl
+
+1402952964 c:\users\justin_becker\documents\github\mandelbrot_set_renderer\cpu render client\depend\sfml-2.1\include\sfml\system\vector3.hpp
+	<SFML/System/Vector3.inl>
+
+1402952964 c:\users\justin_becker\documents\github\mandelbrot_set_renderer\cpu render client\depend\sfml-2.1\include\sfml\system\vector3.inl
+
+1402952964 c:\users\justin_becker\documents\github\mandelbrot_set_renderer\cpu render client\depend\sfml-2.1\include\sfml\network.hpp
+	<SFML/System.hpp>
+	<SFML/Network/Ftp.hpp>
+	<SFML/Network/Http.hpp>
+	<SFML/Network/IpAddress.hpp>
+	<SFML/Network/Packet.hpp>
+	<SFML/Network/SocketSelector.hpp>
+	<SFML/Network/TcpListener.hpp>
+	<SFML/Network/TcpSocket.hpp>
+	<SFML/Network/UdpSocket.hpp>
+
+1402952964 c:\users\justin_becker\documents\github\mandelbrot_set_renderer\cpu render client\depend\sfml-2.1\include\sfml\network\ftp.hpp
+	<SFML/Network/Export.hpp>
+	<SFML/Network/TcpSocket.hpp>
+	<SFML/System/NonCopyable.hpp>
+	<SFML/System/Time.hpp>
+	<string>
+	<vector>
+
+1402952964 c:\users\justin_becker\documents\github\mandelbrot_set_renderer\cpu render client\depend\sfml-2.1\include\sfml\network\export.hpp
+	<SFML/Config.hpp>
+
+1402952964 c:\users\justin_becker\documents\github\mandelbrot_set_renderer\cpu render client\depend\sfml-2.1\include\sfml\network\tcpsocket.hpp
+	<SFML/Network/Export.hpp>
+	<SFML/Network/Socket.hpp>
+	<SFML/System/Time.hpp>
+
+1402952964 c:\users\justin_becker\documents\github\mandelbrot_set_renderer\cpu render client\depend\sfml-2.1\include\sfml\network\socket.hpp
+	<SFML/Network/Export.hpp>
+	<SFML/Network/SocketHandle.hpp>
+	<SFML/System/NonCopyable.hpp>
+	<vector>
+
+1402952964 c:\users\justin_becker\documents\github\mandelbrot_set_renderer\cpu render client\depend\sfml-2.1\include\sfml\network\sockethandle.hpp
+	<SFML/Config.hpp>
+	<basetsd.h>
+
+1402952964 c:\users\justin_becker\documents\github\mandelbrot_set_renderer\cpu render client\depend\sfml-2.1\include\sfml\network\http.hpp
+	<SFML/Network/Export.hpp>
+	<SFML/Network/IpAddress.hpp>
+	<SFML/Network/TcpSocket.hpp>
+	<SFML/System/NonCopyable.hpp>
+	<SFML/System/Time.hpp>
+	<map>
+	<string>
+
+1402952964 c:\users\justin_becker\documents\github\mandelbrot_set_renderer\cpu render client\depend\sfml-2.1\include\sfml\network\ipaddress.hpp
+	<SFML/Network/Export.hpp>
+	<SFML/System/Time.hpp>
+	<istream>
+	<ostream>
+	<string>
+
+1402952964 c:\users\justin_becker\documents\github\mandelbrot_set_renderer\cpu render client\depend\sfml-2.1\include\sfml\network\packet.hpp
+	<SFML/Network/Export.hpp>
+	<string>
+	<vector>
+
+1402952964 c:\users\justin_becker\documents\github\mandelbrot_set_renderer\cpu render client\depend\sfml-2.1\include\sfml\network\socketselector.hpp
+	<SFML/Network/Export.hpp>
+	<SFML/System/Time.hpp>
+
+1402952964 c:\users\justin_becker\documents\github\mandelbrot_set_renderer\cpu render client\depend\sfml-2.1\include\sfml\network\tcplistener.hpp
+	<SFML/Network/Export.hpp>
+	<SFML/Network/Socket.hpp>
+
+1402952964 c:\users\justin_becker\documents\github\mandelbrot_set_renderer\cpu render client\depend\sfml-2.1\include\sfml\network\udpsocket.hpp
+	<SFML/Network/Export.hpp>
+	<SFML/Network/Socket.hpp>
+	<vector>
+
+1402952964 c:\users\justin_becker\documents\github\mandelbrot_set_renderer\cpu render client\depend\tinythread++\tinythread.h
+	<windows.h>
+	<pthread.h>
+	<signal.h>
+	<sched.h>
+	<unistd.h>
+	<ostream>
+
+1402952964 c:\users\justin_becker\documents\github\mandelbrot_set_renderer\cpu render client\depend\tinythread++\tinythread.cpp
+	<exception>
+	"tinythread.h"
+	<unistd.h>
+	<map>
+	<process.h>
+
+1402952964 c:\users\justin_becker\documents\github\mandelbrot_set_renderer\cpu render client\depend\gmp\gmpxx.h
+	<iosfwd>
+	<cstring>
+	<string>
+	<stdexcept>
+	<cfloat>
+	<gmp.h>
+
+1402952964 c:\users\justin_becker\documents\github\mandelbrot_set_renderer\cpu render client\depend\gmp\gmp.h
+	<iosfwd>
+	<cstdio>
+	<cstddef>
+	<stddef.h>
+
+1402952964 c:\users\justin_becker\documents\github\mandelbrot_set_renderer\cpu render client\util.hpp
+	<string>
+	<sstream>
+
+1404874313 c:\users\justin_becker\documents\github\mandelbrot_set_renderer\cpu render client\workorder.hpp
+	"depend\EasyBMP\EasyBMP.h"
+	<SFML/System.hpp>
+	<SFML/Network.hpp>
+
+1402952964 c:\users\justin_becker\documents\github\mandelbrot_set_renderer\cpu render client\workerthread.hpp
+	<string>
+	"Util.hpp"
+	"workOrder.hpp"
+	"PacketOps.hpp"
+	"Render.hpp"
+
+1402952964 c:\users\justin_becker\documents\github\mandelbrot_set_renderer\cpu render client\packetops.hpp
+	"depend\EasyBMP\EasyBMP.h"
+	<SFML/System.hpp>
+	<SFML/Network.hpp>
+	"workOrder.hpp"
+
+1402952964 c:\users\justin_becker\documents\github\mandelbrot_set_renderer\cpu render client\render.hpp
+	"gmpxx.h"
+	"depend\EasyBMP\EasyBMP.h"
+	"Util.hpp"
+	"workOrder.hpp"
+	"workerThread.hpp"
+	"PacketOps.hpp"
+
+1402952964 source:c:\users\justin_becker\documents\github\mandelbrot_set_renderer\cpu render client\packetops.cpp
+	"packetOps.hpp"
+	"depend\EasyBMP\EasyBMP.h"
+	<SFML/System.hpp>
+	<SFML/Network.hpp>
+	"workOrder.hpp"
+
+1402952964 source:c:\users\justin_becker\documents\github\mandelbrot_set_renderer\cpu render client\workerthread.cpp
+	"workerThread.hpp"
+	<string>
+	"Util.hpp"
+	"workOrder.hpp"
+	"PacketOps.hpp"
+	"Render.hpp"
+
+1405099123 source:c:\users\justin_becker\documents\github\mandelbrot_set_renderer\cpu render client\workorder.cpp
+	"workOrder.hpp"
+	"depend\EasyBMP\EasyBMP.h"
+	<SFML/System.hpp>
+	<SFML/Network.hpp>
+
+1404858123 source:c:\users\justin_becker\documents\github\mandelbrot_set_renderer\cpu render client\render.cpp
+	"Render.hpp"
+	"gmpxx.h"
+	"depend\EasyBMP\EasyBMP.h"
+	"Util.hpp"
+	"workOrder.hpp"
+	"workerThread.hpp"
+	"PacketOps.hpp"
+
+1404874313 source:c:\users\justin_becker\documents\github\mandelbrot_set_renderer\cpu render client\util.cpp
+	"Util.hpp"
+	<string>
+	<sstream>
+
